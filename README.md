@@ -3,7 +3,7 @@ CityWatch
 Kinvey iOS Sample App to show off Facebook Open Graph integration with deep-linking.
 
 ## Setup 
-See Kinvey's Open Graph Tutorial how to set up your in Facebook's app system and configure the backend.
+See [Kinvey's Open Graph Tutorial](http://docs.kinvey.com/how-to-use-facebook-open-graph-native-ios-android-apps.html) how to set up your in Facebook's app system and configure the backend.
 
 ## Open Graph Collection
 In order to post to Facebook Open Graph, you'll need to add a Social Data Integration collection for Open Graph. In this sample's case we've named the collection `FBOG` (FaceBook Open Graph). When you POST to this collection by saving a dictionary, it will create an open graph post that is linked to the specified object in the backend's data store. 
