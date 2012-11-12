@@ -1,0 +1,32 @@
+//
+//  ReportModel.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
+#import <KinveyKit/KinveyKit.h>
+
+@interface ReportModel : NSObject <NSCoding>
+
+@property (nonatomic) NSInteger identifier;
+@property (strong, nonatomic) NSString *objectId;
+@property (strong, nonatomic) NSDictionary *reporter;
+@property (strong, nonatomic) NSString *category;
+@property (nonatomic) CLLocationCoordinate2D location;
+@property (strong, nonatomic) NSString *locationString;
+@property (strong, nonatomic) NSString *locationDescription;
+@property (strong, nonatomic) NSString *description;
+@property (strong, nonatomic) NSDate *timestamp;
+@property (nonatomic) BOOL reportIsClosed;
+@property (readonly) NSArray *validCategories;
+@property (nonatomic) BOOL isUploaded;
+@property (strong, nonatomic) NSString *imagePath;
+@property (readonly) BOOL isImageDownloaded;
+
++ (ReportModel *) newReportModel;
+
+@end

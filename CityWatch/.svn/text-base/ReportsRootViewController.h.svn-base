@@ -1,0 +1,31 @@
+//
+//  ReportsRootViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import "CustomReportTableViewCell.h"
+#import "ReportsFilterViewController.h"
+#import "PullToRefreshView.h"
+
+@interface ReportsRootViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, ReportsFilterViewControllerDelegate, PullToRefreshViewDelegate> {    
+    BOOL tableViewIsVisible;
+    FilterOption currentFilterOption;
+    SortOption currentTableSortOption;
+    PullToRefreshView *pullView;
+}
+
+@property (strong, nonatomic) NSArray *reportsData;
+@property (weak, nonatomic) IBOutlet UIView *mainContentView;
+@property (strong, nonatomic) UITableView *reportsTableView;
+@property (weak, nonatomic) IBOutlet CustomReportTableViewCell *cellFromNib;
+@property (strong, nonatomic) MKMapView *reportsMapView;
+@property (weak, nonatomic) IBOutlet UIButton *addReportButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *toggleViewButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@end

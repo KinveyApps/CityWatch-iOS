@@ -1,0 +1,28 @@
+
+//
+//  NewReportViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+#import "ReportModel.h"
+#import "PickerTableViewController.h"
+#import "MapViewController.h"
+#import "DescriptionEditorViewController.h"
+
+@interface NewReportViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, 
+PickerTableViewControllerDelegate, MapViewControllerDelegate, DescriptionEditorViewControllerDelegate, 
+UITextFieldDelegate, MapAnnotationDelegate>
+
+@property (strong, nonatomic) ReportModel *report;
+@property (weak, nonatomic) IBOutlet UIButton *imagePickerButton;
+@property (weak, nonatomic) IBOutlet UITextField *reportCategoryTextField;
+@property (weak, nonatomic) IBOutlet UITextField *reportLocationTextField;
+@property (weak, nonatomic) IBOutlet UITextField *reportDescriptionTextField;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+
+@end

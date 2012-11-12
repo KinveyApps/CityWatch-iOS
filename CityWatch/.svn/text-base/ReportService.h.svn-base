@@ -1,0 +1,29 @@
+//
+//  ApplicationData.h
+//  Potholes
+//
+//  Created by Matt Bridges on 3/19/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <KinveyKit/KinveyKit.h>
+#import "ReportModel.h"
+#import "ImageDownloader.h"
+#import "ReportUploader.h"
+
+#define NOTIFY_FetchComplete @"NOTIFY_FetchComplete"
+#define NOTIFY_ImageDownloaded @"NOTIFY_ImageDownloaded"
+
+@interface ReportService : NSObject <KCSCollectionDelegate, ReportUploaderDelegate, ImageDownloaderDelegate>
+- (void) pullReports;
+- (void) pushReport:(ReportModel *) report;
+- (void) downloadImageForReport:(ReportModel *)report;
+- (void) addReport:(ReportModel *)report;
+- (void) saveReportsToDisk;
+- (void) readReportsFromDisk;
+
++ (ReportService *) sharedInstance;
+
+@property (strong, readonly) NSArray *reports;
+@end

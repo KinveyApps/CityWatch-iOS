@@ -1,0 +1,26 @@
+//
+//  PickerTableViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@protocol PickerTableViewControllerDelegate;
+
+@interface PickerTableViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>
+
+@property (weak, nonatomic) IBOutlet UITableView *pickerTableView;
+@property (strong, nonatomic) NSArray *cellTitles;
+@property (weak, nonatomic) id <PickerTableViewControllerDelegate> delegate;
+@property NSInteger selectedRow;
+
+@end
+
+@protocol PickerTableViewControllerDelegate
+
+- (void)pickerTableViewController:(PickerTableViewController *)picker selectedRow:(NSInteger)row;
+
+@end

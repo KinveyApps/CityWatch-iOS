@@ -1,0 +1,23 @@
+//
+//  ImageDownloader.h
+//  Potholes
+//
+//  Created by Matt Bridges on 3/21/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "ReportModel.h"
+
+@class ImageDownloader;
+
+@protocol ImageDownloaderDelegate <NSObject>
+- (void) imageDownloaderDidFinish:(ImageDownloader *)downloader;
+@end
+
+@interface ImageDownloader : NSObject <KCSResourceDelegate>
+- (id) initWithReport:(ReportModel *)report;
+- (void) download;
+@property (weak, nonatomic) ReportModel *report;
+@property (weak, nonatomic) id<ImageDownloaderDelegate> delegate;
+@end

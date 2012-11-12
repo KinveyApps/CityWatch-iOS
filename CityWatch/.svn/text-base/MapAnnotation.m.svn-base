@@ -1,0 +1,89 @@
+    //
+//  MapAnnotation.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "MapAnnotation.h"
+#import "UIImage+Resize.h"
+
+@implementation MapAnnotation
+
+@synthesize coordinate;
+@synthesize title;
+@synthesize subtitle;
+@synthesize identifier;
+@synthesize reverseGeo;
+@synthesize streetNumber;
+@synthesize streetName;
+@synthesize city;
+@synthesize delegate;
+@synthesize image;
+@synthesize reportModel;
+
+- (id)initWithCoordinate:(CLLocationCoordinate2D)myCoord title:(NSString *)myTitle {
+    coordinate = myCoord;
+    title = myTitle;
+    [self setAddressFields:[[CLLocation alloc] initWithLatitude:myCoord.latitude longitude:myCoord.longitude]];
+    return self;
+}
+
+- (id)initWithReport:(ReportModel *)report {
+    reportModel = report;
+    coordinate = report.location;
+    title = report.category;
+    //identifier = aReport.identifier;
+    // MB create image from imagePath
+    //image = [aReport.image copy];
+    UIImage *thumbnail = [UIImage imageWithContentsOfFile:report.imagePath];
+    thumbnail = [thumbnail thumbnailImage:100 transparentBorder:0 cornerRadius:7 interpolationQuality:kCGInterpolationDefault];
+    dispatch_queue_t mainThreadQueue = dispatch_get_main_queue();
+    dispatch_async(mainThreadQueue, ^{
+        image = thumbnail;
+    });
+    [self setAddressFields:[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude]];
+    return self;
+}
+
+- (NSString *)subtitle{
+    if (!subtitle) {
+        return [NSString stringWithFormat:@"(%f , %f)",coordinate.latitude,coordinate.longitude];
+    }
+    else {
+        return subtitle;
+    }
+}
+
+- (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate {
+    coordinate = newCoordinate;
+}
+
+- (void)setAddressFields:(CLLocation *)loc {
+    
+    if (!self.reverseGeo) {
+        self.reverseGeo = [[CLGeocoder alloc] init];
+    }
+    
+    [self.reverseGeo reverseGeocodeLocation:loc 
+                          completionHandler:^(NSArray *placemarks, NSError *error) {
+                              for (CLPlacemark *placemark in placemarks) {
+                                  self.streetNumber = placemark.subThoroughfare;
+                                  self.streetName = placemark.thoroughfare;
+                                  self.city = placemark.locality;
+                                  
+                                  NSString *locationString;
+                                  if (!self.streetNumber)
+                                      locationString = [NSString stringWithFormat:@"%@, %@",self.streetName,self.city];
+                                  else
+                                      locationString = [NSString stringWithFormat:@"%@ %@, %@",self.streetNumber,self.streetName,self.city];
+
+                                  subtitle = locationString;
+                              }
+                              [delegate mapAnnotationFinishedReverseGeocoding:self];
+                          }
+     ];
+}
+
+@end

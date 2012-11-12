@@ -1,0 +1,153 @@
+//
+//  ReportDetailViewController.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/18/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "ReportDetailViewController.h"
+#import "PotholesCustomNavigationBar.h"
+#import "ImageScrollViewController.h"
+#import <QuartzCore/QuartzCore.h>
+
+#define CELL_HEIGHT_PADDING     14.0
+#define MAX_IMAGE_HEIGHT     180.0f
+#define LANDSCAPE_SCALE 4/3
+#define PORTRAIT_SCALE  3/4
+
+NSString *const kSegueIdentifierPushImageViewer = @"kSegueIdentifierPushImageViewer";
+
+@implementation ReportDetailViewController
+
+@synthesize report;
+@synthesize reportImageView;
+@synthesize imageCell;
+@synthesize reportCategoryLabel;
+@synthesize reportLocationLabel;
+@synthesize reportDescriptionLabel;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - View lifecycle
+
+// in viewWillAppear/Disappear, toggle nav bar hidden for smooth transition with parent vc
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    self.navigationController.navigationBar.translucent = YES;
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillDisappear:animated];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.navigationItem.title = [self.report.category capitalizedString];
+    self.imageCell.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.reportCategoryLabel.text = self.report.category;
+    self.reportLocationLabel.text = self.report.locationDescription;
+    self.reportDescriptionLabel.text = self.report.description;
+
+//    self.reportImageView.contentMode = UIViewContentModeScaleAspectFill;
+//    self.reportImageView.layer.borderColor = [UIColor colorWithHue:0 saturation:0 brightness:0.75 alpha:1].CGColor;
+//    self.reportImageView.layer.borderWidth = 5.0f;
+//    self.reportImageView.layer.cornerRadius = 10.0f;
+//    self.reportImageView.layer.masksToBounds = YES;
+
+    if (self.report.isImageDownloaded) {
+        self.reportImageView.image = [UIImage imageWithContentsOfFile:self.report.imagePath];
+        
+//        CGSize imageSize = self.reportImageView.image.size;
+//        if (imageSize.width > imageSize.height) {
+//            // landscape
+//            self.reportImageView.frame = CGRectMake(0, 0, MAX_IMAGE_HEIGHT * LANDSCAPE_SCALE, MAX_IMAGE_HEIGHT);
+//        }
+//        else if (imageSize.width < imageSize.height) {
+//            // portrait
+//            self.reportImageView.frame = CGRectMake(0, 0, MAX_IMAGE_HEIGHT * PORTRAIT_SCALE, MAX_IMAGE_HEIGHT);
+//        }
+//        else {
+//            // square
+//            self.reportImageView.frame = CGRectMake(0, 0, MAX_IMAGE_HEIGHT, MAX_IMAGE_HEIGHT);
+//        }
+//        
+//        self.reportImageView.center = CGPointMake(self.imageCell.frame.size.width / 2, self.imageCell.frame.size.height / 2);
+    }
+}
+
+#pragma mark - segue methods
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:kSegueIdentifierPushImageViewer]) {
+        ImageScrollViewController *dest = segue.destinationViewController;
+        dest.report = self.report;
+        dest.navigationItem.title = self.navigationItem.title;
+    }
+}
+
+#pragma mark - UITableViewDelegate
+
+// dynamic row height
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    float labelHeight = 0;
+    
+    if (indexPath.section == 0) {
+        return self.reportImageView.frame.size.height + 2*CELL_HEIGHT_PADDING;
+    }
+    else {
+        switch (indexPath.row) {
+            case 0:
+                labelHeight = [self.reportCategoryLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:UILineBreakModeWordWrap].height;
+                break;
+            case 1:
+                labelHeight = [self.reportLocationLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:UILineBreakModeWordWrap].height;
+                break;
+            case 2:
+                labelHeight = [self.reportDescriptionLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:UILineBreakModeWordWrap].height;
+                break;
+                
+            default:
+                break;
+        }
+    }
+    return labelHeight + 2*CELL_HEIGHT_PADDING;
+}
+
+- (void)viewDidUnload
+{
+    [self setReportImageView:nil];
+    [self setReportCategoryLabel:nil];
+    [self setReportLocationLabel:nil];
+    [self setReportDescriptionLabel:nil];
+    [self setImageCell:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+@end

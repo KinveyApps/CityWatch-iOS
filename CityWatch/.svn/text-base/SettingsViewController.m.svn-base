@@ -1,0 +1,119 @@
+//
+//  SettingsViewController.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/18/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "SettingsViewController.h"
+
+@implementation SettingsViewController
+
+@synthesize reporterId;
+@synthesize presentNewReportOnStartup;
+@synthesize reporterIdLabel;
+@synthesize presentNewReportOnStartupSwitch;
+
+- (NSString *)reporterId {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"reporterId"];
+}
+
+- (BOOL)presentNewReportOnStartup {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"presentNewReportsOnStartup"];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"kSegueIdentifierPushUserInfoEditor"]) {
+        ((ReporterInfoEditorViewController *)segue.destinationViewController).delegate = self;
+    }
+}
+
+- (void)reloadReporterIdTextForReporterInfo:(NSDictionary *)reporterInfo {
+    NSString *reporterIdText = @"";
+    if ([[[ApplicationSettings sharedSettings] reporterInfo] objectForKey:@"firstName"])
+        reporterIdText = [NSString stringWithFormat:@"%@ ",[[[ApplicationSettings sharedSettings] reporterInfo] objectForKey:@"firstName"]];
+    if ([[[ApplicationSettings sharedSettings] reporterInfo] objectForKey:@"lastName"])
+        reporterIdText = [reporterIdText stringByAppendingString:[[[ApplicationSettings sharedSettings] reporterInfo] objectForKey:@"lastName"]];
+    self.reporterIdLabel.text = reporterIdText;
+}
+
+#pragma mark - View lifecycle
+- (void)viewWillAppear:(BOOL)animated {  
+    // Unselect the selected row if any
+	NSIndexPath *selection = [self.tableView indexPathForSelectedRow];
+	if (selection)
+		[self.tableView deselectRowAtIndexPath:selection animated:YES];
+    
+	[self.tableView reloadData];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self reloadReporterIdTextForReporterInfo:[[ApplicationSettings sharedSettings] reporterInfo]];
+    [self.presentNewReportOnStartupSwitch setOn:[[ApplicationSettings sharedSettings] presentNewReportOnStartup]];
+}
+
+#pragma mark - ReporterInfoEditorViewControllerDelegate
+
+- (void)reporterInfoWasChanged:(NSDictionary *)reporterInfo {
+    [self reloadReporterIdTextForReporterInfo:reporterInfo];
+}
+
+- (IBAction)presentNewReportOnStartupSwitchToggled:(id)sender {
+    [[ApplicationSettings sharedSettings] setPresentNewReportOnStartup:![[ApplicationSettings sharedSettings] presentNewReportOnStartup]];
+}
+
+- (IBAction)doneButtonPressed:(id)sender {
+    // animate button
+    [UIView animateWithDuration:0.25 
+                     animations:^{
+                         ((UIView *)sender).transform = CGAffineTransformMakeRotation(M_PI - 0.01);
+                     }
+                     completion:^(BOOL finished) {
+                         [self dismissModalViewControllerAnimated:YES];
+                     }
+     ];
+}
+
+- (void)viewDidUnload
+{
+    [self setPresentNewReportOnStartupSwitch:nil];
+    [self setReporterIdLabel:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+@end

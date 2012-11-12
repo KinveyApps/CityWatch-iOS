@@ -1,0 +1,41 @@
+//
+//  ReportsFilterViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/23/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+typedef enum {
+    FilterOptionAll = 0,
+    FilterOptionMine
+} FilterOption;
+
+typedef enum {
+    SortOptionRecent = 0,
+    SortOptionDistance
+} SortOption;
+
+extern NSString *const kFilterOptionKey;
+extern NSString *const kSortOptionKey;
+
+@protocol ReportsFilterViewControllerDelegate
+
+- (void)reportFilterEditingFinishedWithOptions:(NSDictionary *)options;
+- (void)reportFilterEditingFinishedWithFilterOption:(NSInteger)filterRow sortOption:(NSInteger)sortRow;
+
+@end
+
+@interface ReportsFilterViewController : UITableViewController
+
+@property FilterOption selectedFilterOption;
+@property SortOption selectedSortOption;
+@property (weak, nonatomic) id <ReportsFilterViewControllerDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UITableViewCell *allReportsCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *myReportsCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *datePostedCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *distanceCell;
+
+@end

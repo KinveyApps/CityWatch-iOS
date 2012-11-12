@@ -1,0 +1,19 @@
+//
+//  SettingsViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/18/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "ReporterInfoEditorViewController.h"
+
+@interface SettingsViewController : UITableViewController <ReporterInfoEditorViewControllerDelegate>
+
+@property (weak, nonatomic, readonly) NSString *reporterId;
+@property (readonly) BOOL presentNewReportOnStartup;
+@property (weak, nonatomic) IBOutlet UILabel *reporterIdLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *presentNewReportOnStartupSwitch;
+
+@end

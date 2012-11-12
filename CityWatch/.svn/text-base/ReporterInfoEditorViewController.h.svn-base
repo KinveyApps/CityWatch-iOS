@@ -1,0 +1,26 @@
+//
+//  ReporterInfoEditorViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/19/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@protocol ReporterInfoEditorViewControllerDelegate;
+
+@interface ReporterInfoEditorViewController : UITableViewController
+
+@property (weak, nonatomic) IBOutlet UITextField *reporterFirstNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *reporterLastNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *reporterEmailTextField;
+@property (weak, nonatomic) id <ReporterInfoEditorViewControllerDelegate> delegate;
+
+@end
+
+@protocol ReporterInfoEditorViewControllerDelegate
+
+- (void)reporterInfoWasChanged:(NSDictionary *)reporterInfo;
+
+@end

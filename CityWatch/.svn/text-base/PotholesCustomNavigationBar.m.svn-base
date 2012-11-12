@@ -1,0 +1,18 @@
+//
+//  PotholesCustomNavigationBar.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/23/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "PotholesCustomNavigationBar.h"
+
+@implementation PotholesCustomNavigationBar
+
+- (void)drawRect:(CGRect)rect {
+    UIImage *imageBackground = [UIImage imageNamed:@"blue_top_bar_no_tab.png"];
+    [imageBackground drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height-1)];
+}
+
+@end

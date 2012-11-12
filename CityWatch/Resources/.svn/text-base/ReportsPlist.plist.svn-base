@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>reports</key>
+	<array>
+		<dict>
+			<key>identifier</key>
+			<integer>1000000</integer>
+			<key>reporter</key>
+			<dict>
+				<key>firstName</key>
+				<string>me</string>
+				<key>lastName</key>
+				<string></string>
+				<key>email</key>
+				<string>myemail@host.com</string>
+			</dict>
+			<key>category</key>
+			<string>Obstruction</string>
+			<key>description</key>
+			<string>A small river is blocked by a fallen tree</string>
+			<key>location</key>
+			<string>21.500112783557,77.208995819092</string>
+			<key>locationDescription</key>
+			<string>Kolkazz</string>
+			<key>image</key>
+			<string>ecowatch_blockedriver.png</string>
+			<key>timestamp</key>
+			<date>2012-02-12T18:58:44Z</date>
+			<key>isClosed</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>identifier</key>
+			<integer>1000001</integer>
+			<key>reporter</key>
+			<dict>
+				<key>firstName</key>
+				<string>some</string>
+				<key>lastName</key>
+				<string>guy</string>
+				<key>email</key>
+				<string>someguysemail@host.com</string>
+			</dict>
+			<key>category</key>
+			<string>Wildlife</string>
+			<key>description</key>
+			<string>There&apos;s a tiger on the road!</string>
+			<key>location</key>
+			<string>21.396339883896,77.093639373779</string>
+			<key>locationDescription</key>
+			<string>State Highway 204</string>
+			<key>image</key>
+			<string>ecowatch_foresttiger.png</string>
+			<key>timestamp</key>
+			<date>2012-02-20T17:58:44Z</date>
+			<key>isClosed</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>identifier</key>
+			<integer>1000002</integer>
+			<key>reporter</key>
+			<dict>
+				<key>firstName</key>
+				<string>some</string>
+				<key>lastName</key>
+				<string>guy</string>
+				<key>email</key>
+				<string>someguysemail@host.com</string>
+			</dict>
+			<key>category</key>
+			<string>Infrastructure</string>
+			<key>description</key>
+			<string>The bridge is damaged</string>
+			<key>location</key>
+			<string>21.491407966408,77.356796264648</string>
+			<key>locationDescription</key>
+			<string>Major State Highway 6</string>
+			<key>image</key>
+			<string>ecowatch_damagedbridge.png</string>
+			<key>timestamp</key>
+			<date>2012-02-22T18:08:44Z</date>
+			<key>isClosed</key>
+			<false/>
+		</dict>
+	</array>
+</dict>
+</plist>

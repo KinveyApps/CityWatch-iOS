@@ -1,0 +1,23 @@
+//
+//  ReportUploader.h
+//  Potholes
+//
+//  Created by Matt Bridges on 3/21/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "ReportModel.h"
+
+@class ReportUploader;
+
+@protocol ReportUploaderDelegate <NSObject>
+- (void) reportUploaderDidFinish:(ReportUploader *)uploader;
+@end
+
+@interface ReportUploader : NSObject <KCSResourceDelegate, KCSPersistableDelegate>
+- (id) initWithReport:(ReportModel *)report collection:(KCSCollection *)collection;
+- (void) upload;
+@property (weak, nonatomic) id<ReportUploaderDelegate> delegate;
+@property (strong, nonatomic) ReportModel *report;
+@end

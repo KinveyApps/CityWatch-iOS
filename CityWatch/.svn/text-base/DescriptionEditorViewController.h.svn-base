@@ -1,0 +1,25 @@
+//
+//  DescriptionEditorViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/18/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@protocol DescriptionEditorViewControllerDelegate;
+
+@interface DescriptionEditorViewController : UITableViewController
+
+@property (weak, nonatomic) IBOutlet UITextView *descriptionTextField;
+@property (strong, nonatomic) NSString *description;
+@property (weak, nonatomic) id <DescriptionEditorViewControllerDelegate> delegate;
+
+@end
+
+@protocol DescriptionEditorViewControllerDelegate
+
+- (void)descriptionEditorFinishedEditingWithText:(NSString *)description;
+
+@end

@@ -1,0 +1,28 @@
+//
+//  MapViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import "MapAnnotation.h"
+
+@protocol MapViewControllerDelegate;
+
+@interface MapViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
+
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) MapAnnotation *reportAnnotation;
+@property (weak, nonatomic) id <MapViewControllerDelegate> delegate;
+
+@end
+
+@protocol MapViewControllerDelegate
+
+- (void)mapViewControllerDoneButtonPressedWithAnnotation:(MapAnnotation *)annotation;
+
+@end

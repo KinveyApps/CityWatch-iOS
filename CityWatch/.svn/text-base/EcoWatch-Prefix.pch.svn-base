@@ -1,0 +1,19 @@
+//
+// Prefix header for all source files of the 'Potholes' target in the 'Potholes' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import "ApplicationSettings.h"
+    #import "TestFlight.h"
+#endif
+
+#define KINVEY_SECERT_APP_KEY @"7cbcb045ee6244d8867d2d266e74e253"
+#define KINVEY_APPLICATION_KEY @"kid1005"

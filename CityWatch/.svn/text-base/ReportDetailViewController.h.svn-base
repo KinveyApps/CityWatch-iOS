@@ -1,0 +1,22 @@
+//
+//  ReportDetailViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/18/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "ReportModel.h"
+
+@interface ReportDetailViewController : UITableViewController
+
+@property (strong, nonatomic) ReportModel *report;
+
+@property (weak, nonatomic) IBOutlet UIImageView *reportImageView;
+@property (weak, nonatomic) IBOutlet UITableViewCell *imageCell;
+@property (weak, nonatomic) IBOutlet UILabel *reportCategoryLabel;
+@property (weak, nonatomic) IBOutlet UILabel *reportLocationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *reportDescriptionLabel;
+
+@end

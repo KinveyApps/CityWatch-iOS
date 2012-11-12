@@ -1,0 +1,27 @@
+//
+//  CustomReportTableViewCell.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "CustomReportTableViewCell.h"
+
+@implementation CustomReportTableViewCell
+
+@synthesize reportImage;
+@synthesize reportLocation;
+@synthesize reportCategory;
+@synthesize reportDescription;
+@synthesize reportDistance;
+@synthesize reportTime;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+    }
+    return self;
+}
+
+@end

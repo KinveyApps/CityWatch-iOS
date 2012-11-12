@@ -1,0 +1,55 @@
+//
+//  ImageDownloader.m
+//  Potholes
+//
+//  Created by Matt Bridges on 3/21/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "ImageDownloader.h"
+#import "ReportService.h"
+
+@interface ImageDownloader()
+- (NSString *) documentsDirectoryPath;
+@end
+
+@implementation ImageDownloader
+@synthesize report = _report;
+@synthesize delegate;
+
+- (id) initWithReport:(ReportModel *)report
+{
+    if (self = [super init]) {
+        self.report = report;
+    }
+    
+    return self;
+}
+
+-(NSString *)documentsDirectoryPath {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+    return documentsDirectoryPath;
+} 
+
+- (void) download
+{
+    NSString *path = [[self documentsDirectoryPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", self.report.objectId]];
+    [KCSResourceService downloadResource:self.report.objectId toFile:path withResourceDelegate:self];
+}
+
+- (void)resourceServiceDidCompleteWithResult: (KCSResourceResponse *)result 
+{
+    NSLog(@"resourceService completed.");
+    self.report.imagePath = result.localFileName;
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFY_ImageDownloaded object:self.report];
+    [self.delegate imageDownloaderDidFinish:self];
+}
+
+- (void)resourceServiceDidFailWithError: (NSError *)error
+{
+    NSLog(@"resourceService failed with error %@", error);  
+    [self.delegate imageDownloaderDidFinish:self];
+}
+
+@end

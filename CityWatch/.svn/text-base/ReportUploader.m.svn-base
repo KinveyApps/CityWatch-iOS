@@ -1,0 +1,86 @@
+//
+//  ReportUploader.m
+//  Potholes
+//
+//  Created by Matt Bridges on 3/21/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "ReportUploader.h"
+@interface ReportUploader() {
+    BOOL imageFinished;
+    BOOL entityFinished;
+    BOOL imageSucceeded;
+    BOOL entitySucceeded;
+}
+- (void) notifyDelegateIfReady;
+@property (strong, nonatomic) KCSCollection *kinveyCollection;
+@property (strong, nonatomic) KCSResourceResponse *result;
+@end
+
+@implementation ReportUploader
+
+@synthesize report = _report;
+@synthesize kinveyCollection = _kinveyCollection;
+@synthesize delegate = _delegate;
+@synthesize result = _result;
+
+- (id) initWithReport:(ReportModel *)report collection:(KCSCollection *)collection
+{
+    if (self = [super init]) {
+        self.report = report;
+        self.kinveyCollection = collection;
+    }
+    
+    return self;
+}
+
+- (void) upload
+{
+    NSData *data = [NSData dataWithContentsOfFile:self.report.imagePath];
+    [KCSResourceService saveData:data toResource:self.report.objectId withDelegate:self];
+    [self.report saveToCollection:self.kinveyCollection withDelegate:self];
+}
+
+- (void)resourceServiceDidCompleteWithResult: (KCSResourceResponse *)result 
+{
+    NSLog(@"resourceService completed.");
+    imageFinished = true;
+    imageSucceeded = true;
+    [self notifyDelegateIfReady];
+    
+}
+
+- (void)resourceServiceDidFailWithError: (NSError *)error
+{
+    NSLog(@"resourceService failed with error %@.", error);
+    imageFinished = true;
+    [self notifyDelegateIfReady];
+}
+
+#pragma mark KCSPersistableDelegate
+
+- (void) entity: (id)entity operationDidFailWithError: (NSError *)error {
+    NSLog(@" entity:(id)%@ operationDidFailWithError: (NSError *)%@", entity, error);
+    entityFinished = true;
+    entitySucceeded = true;
+    [self notifyDelegateIfReady];
+}
+
+- (void) entity:(id)entity operationDidCompleteWithResult: (NSObject *)result {
+    NSLog(@" entity:(id)%@ operationDidCompleteWithResult: (NSObject *)%@", entity, result);
+    entityFinished = true;
+    [self notifyDelegateIfReady];
+}
+
+- (void) notifyDelegateIfReady
+{
+    if (entityFinished && imageFinished) {
+        if (imageSucceeded && entitySucceeded) {
+            self.report.isUploaded = true;
+        }
+        [self.delegate reportUploaderDidFinish:self];
+    }
+}
+
+@end

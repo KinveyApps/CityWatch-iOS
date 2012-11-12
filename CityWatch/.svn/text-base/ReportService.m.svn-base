@@ -1,0 +1,154 @@
+//
+//  ApplicationData.m
+//  Potholes
+//
+//  Created by Matt Bridges on 3/19/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "ReportService.h"
+#import "ReportUploader.h"
+#import <KinveyKit/KinveyKit.h>
+#import <UIKit/UIKit.h>
+
+@interface ReportService()
+@property(strong, readonly) KCSCollection *kinveyCollection;
+@property(strong, nonatomic) NSMutableArray *managedReports;
+@property(strong, nonatomic) NSMutableDictionary *imageDownloaders;
+@property(strong, nonatomic) NSMutableDictionary *reportUploaders;
+@end
+
+@implementation ReportService
+@synthesize reports = _reports;
+@synthesize kinveyCollection = _kinveyCollection;
+@synthesize managedReports = _managedReports;
+@synthesize imageDownloaders = _imageDownloaders;
+@synthesize reportUploaders = _reportUploaders;
+
+- (id) init {
+    if (self = [super init]) {
+        self.managedReports = [[NSMutableArray alloc] init];
+        self.imageDownloaders = [[NSMutableDictionary alloc] init];
+    }
+    
+    return self;
+}
+
++ (id) sharedInstance 
+{
+    static dispatch_once_t p = 0;
+    __strong static id _sharedObject = nil;
+
+    dispatch_once(&p, ^{
+        _sharedObject = [[self alloc] init];
+    });
+
+    return _sharedObject;
+}
+
+- (NSArray *) reports
+{
+    return [self.managedReports copy];
+}
+
+- (KCSCollection *) kinveyCollection 
+{
+    if (!_kinveyCollection) {
+        _kinveyCollection = [[KCSClient sharedClient] collectionFromString:@"Reports" withClass:[ReportModel class]];
+    }
+    
+    return _kinveyCollection;
+}
+
+- (void) addReport:(ReportModel *)report
+{
+    [self.managedReports addObject:report];
+}
+
+#pragma mark Pushing Data
+
+- (void) pushReport:(ReportModel *)report
+{
+    if ([self.reportUploaders objectForKey:report.objectId] == nil) {
+        ReportUploader *uploader = [[ReportUploader alloc] initWithReport:report collection:self.kinveyCollection];
+        uploader.delegate = self;
+        [self.reportUploaders setObject:uploader forKey:report.objectId];
+        [uploader upload];
+    }
+}
+
+- (void) reportUploaderDidFinish:(ReportUploader *)uploader;
+{
+    [self.reportUploaders removeObjectForKey:uploader.report.objectId];
+}
+
+#pragma mark Pulling Data
+
+- (void) pullReports 
+{
+    [self.kinveyCollection fetchAllWithDelegate:self];
+}
+
+- (void) collection: (KCSCollection *)collection didFailWithError: (NSError *)error 
+{
+    NSLog(@"Fetch all did fail");
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFY_FetchComplete object:nil];
+}
+
+- (void) collection: (KCSCollection *)collection didCompleteWithResult: (NSArray *)result 
+{
+    for (ReportModel *report in result) {
+        
+        // Check if we already have this report
+        NSUInteger index = [self.managedReports indexOfObjectPassingTest:
+                     ^(id obj, NSUInteger idx, BOOL *stop) { 
+                         return [[obj objectId] isEqualToString:report.objectId]; 
+                     }];
+        
+        // Add report if necessary.
+        if (index == NSNotFound) {
+            [self.managedReports addObject:report];
+            report.isUploaded = true;
+        }
+        else {
+            ((ReportModel *)[self.managedReports objectAtIndex:index]).isUploaded = true;
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFY_FetchComplete object:nil];
+}
+
+- (void) downloadImageForReport:(ReportModel *)report
+{
+    if ([self.imageDownloaders objectForKey:report.objectId] == nil) {
+        ImageDownloader *downloader = [[ImageDownloader alloc] initWithReport:report];
+        downloader.delegate = self;
+        [self.imageDownloaders setObject:downloader forKey:report.objectId];
+        [downloader download];
+    }
+}
+
+- (void) imageDownloaderDidFinish:(ImageDownloader *)downloader
+{
+    [self.imageDownloaders removeObjectForKey:downloader.report.objectId];
+}
+
+- (void) saveReportsToDisk 
+{
+    NSData *encodedReports = [NSKeyedArchiver archivedDataWithRootObject:self.reports];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:encodedReports forKey:@"reportsArray"];
+    [defaults synchronize];
+}
+
+- (void) readReportsFromDisk 
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *reportsData = [defaults objectForKey:@"reportsArray"];
+    if (reportsData) {
+        NSArray *reportsArray = (NSArray *)[NSKeyedUnarchiver unarchiveObjectWithData:reportsData];
+        self.managedReports = [reportsArray mutableCopy];
+    }
+}
+
+@end

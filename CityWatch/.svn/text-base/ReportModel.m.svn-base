@@ -1,0 +1,113 @@
+//
+//  ReportModel.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import "ReportModel.h"
+
+@implementation ReportModel
+
+@synthesize identifier;
+@synthesize objectId;
+@synthesize reporter;
+@synthesize category;
+@synthesize location;
+@synthesize locationDescription;
+@synthesize description;
+@synthesize timestamp;
+@synthesize reportIsClosed;
+@synthesize isUploaded;
+@synthesize imagePath;
+
+- (void) encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.objectId forKey:@"objectId"];
+    [encoder encodeObject:self.reporter forKey:@"reporter"];
+    [encoder encodeObject:self.category forKey:@"category"];
+    [encoder encodeObject:self.locationString forKey:@"locationString"];
+    [encoder encodeObject:self.locationDescription forKey:@"locationDescription"];
+    [encoder encodeObject:self.description forKey:@"description"];
+    [encoder encodeObject:self.timestamp forKey:@"timestamp"];
+    [encoder encodeObject:[NSNumber numberWithBool:self.reportIsClosed] forKey:@"reportIsClosed"];
+    [encoder encodeObject:[NSNumber numberWithBool:self.isUploaded] forKey:@"isUploaded"];
+    [encoder encodeObject:self.imagePath forKey:@"imagePath"];
+}
+
+- (id) initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init]) {
+        self.objectId = [decoder decodeObjectForKey:@"objectId"];
+        self.reporter = [decoder decodeObjectForKey:@"reporter"];
+        self.category = [decoder decodeObjectForKey:@"category"];
+        self.locationString = [decoder decodeObjectForKey:@"locationString"];
+        self.locationDescription = [decoder decodeObjectForKey:@"locationDescription"];
+        self.description = [decoder decodeObjectForKey:@"description"];
+        self.timestamp = [decoder decodeObjectForKey:@"timestamp"];
+        self.reportIsClosed = [(NSNumber *)[decoder decodeObjectForKey:@"category"] boolValue]; 
+        self.isUploaded = [(NSNumber *)[decoder decodeObjectForKey:@"category"] boolValue];
+        self.imagePath = [decoder decodeObjectForKey:@"imagePath"];
+    }
+    return self;
+}
+
+- (NSString *) locationString
+{
+    return [NSString stringWithFormat:@"%f,%f", location.latitude, location.longitude];
+}
+
+- (void) setLocationString:(NSString *)locationString
+{
+    NSArray *coordinates = [locationString componentsSeparatedByString:@","];
+    location = CLLocationCoordinate2DMake([[coordinates objectAtIndex:0] floatValue], 
+                                          [[coordinates objectAtIndex:1] floatValue]);
+}
+
++ (NSString *)generateUuidString
+{
+    CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuidString = [(__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuid) copy];
+    CFRelease(uuid);
+    
+    return uuidString;
+}
+
++ (ReportModel *) newReportModel {
+    ReportModel *report = [[ReportModel alloc] init];
+    report.objectId = [self generateUuidString];
+    return report;
+}
+
+- (NSDictionary*) hostToKinveyPropertyMapping {
+    NSMutableDictionary *kinveyDict = [[NSMutableDictionary alloc] init];
+    
+    [kinveyDict setObject:@"description" forKey:@"description"];
+    [kinveyDict setObject:@"location" forKey:@"locationString"];
+    [kinveyDict setObject:@"locationDescription" forKey:@"locationDescription"];
+    [kinveyDict setObject:@"category" forKey:@"category"];
+    [kinveyDict setObject:@"timestamp" forKey:@"timestamp"];
+    [kinveyDict setObject:@"reporter" forKey:@"reporter"];
+    [kinveyDict setObject:@"_id" forKey:@"objectId"];
+    return [kinveyDict copy];
+}
+
+- (NSArray *)validCategories {
+    return [[NSArray alloc] initWithObjects:@"Infrastructure",@"Wildlife",@"Weather",@"Obstruction",
+            @"Emergency",@"Fire",@"Flood",@"Other",nil];
+}
+
+- (BOOL) isImageDownloaded
+{
+    if (self.imagePath) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+
+
+
+@end

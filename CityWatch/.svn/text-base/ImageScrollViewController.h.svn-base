@@ -1,0 +1,18 @@
+//
+//  ImageScrollViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 3/30/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "ReportModel.h"
+
+@interface ImageScrollViewController : UIViewController <UIScrollViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
+@property (weak, nonatomic) IBOutlet UIImageView *reportImageView;
+@property (strong, nonatomic) ReportModel *report;
+
+@end

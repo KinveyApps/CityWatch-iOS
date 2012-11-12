@@ -1,0 +1,66 @@
+//
+//  ApplicationSettings.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/19/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import "ApplicationSettings.h"
+
+NSString *const kApplicationSettingsPreviousVersionsKey = @"kApplicationSettingsPreviousVersionsKey";
+NSString *const kApplicationSettingsReporterInformationKey = @"kApplicationSettingsReporterInformationKey";
+NSString *const kApplicationSettingsNewReportStartupKey = @"kApplicationSettingsNewReportStartupKey";
+NSString *const kApplicationSettingsUserLocationCoordinateKey = @"kApplicationSettingsUserLocationCoordinateKey";
+
+@implementation ApplicationSettings
+
+static ApplicationSettings *applicationSettings = nil;
+
++ (ApplicationSettings *)sharedSettings {
+    if (!applicationSettings) {
+        applicationSettings = [[ApplicationSettings alloc] init];
+    }
+    return applicationSettings;
+}
+
+- (id)init {
+    if (self = [super init]) {
+        [self setPresentNewReportOnStartup:YES];
+    }
+    return self;
+}
+
+- (NSDictionary *)reporterInfo {
+    return [self objectForKey:kApplicationSettingsReporterInformationKey];
+}
+
+- (void)setReporterInfo:(NSDictionary *)reporterInfo {
+    [self setObject:reporterInfo forKey:kApplicationSettingsReporterInformationKey];
+}
+
+- (BOOL)presentNewReportOnStartup {
+    return [self boolForKey:kApplicationSettingsNewReportStartupKey];
+}
+
+- (void)setPresentNewReportOnStartup:(BOOL)presentNewReportOnStartup {
+    [self setBool:presentNewReportOnStartup forKey:kApplicationSettingsNewReportStartupKey];
+}
+
+- (NSArray *)currentUserCoordinates {
+    return [self objectForKey:kApplicationSettingsUserLocationCoordinateKey];
+}
+
+- (void)setCurrentUserCoordinates:(NSArray *)currentUserCoordinates {
+    [self setObject:currentUserCoordinates forKey:kApplicationSettingsUserLocationCoordinateKey];
+}
+
+- (NSArray *)previousStartupVersions {
+    return [self objectForKey:kApplicationSettingsPreviousVersionsKey];
+}
+
+- (void)setPreviousStartupVersions:(NSArray *)previousStartupVersions {
+    [self setObject:previousStartupVersions forKey:kApplicationSettingsPreviousVersionsKey];
+}
+
+@end

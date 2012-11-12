@@ -1,0 +1,21 @@
+//
+//  CustomReportTableViewCell.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "ReportModel.h"
+
+@interface CustomReportTableViewCell : UITableViewCell
+
+@property (weak, nonatomic) IBOutlet UIImageView *reportImage;
+@property (weak, nonatomic) IBOutlet UILabel *reportLocation;
+@property (weak, nonatomic) IBOutlet UILabel *reportCategory;
+@property (weak, nonatomic) IBOutlet UILabel *reportDescription;
+@property (weak, nonatomic) IBOutlet UILabel *reportDistance;
+@property (weak, nonatomic) IBOutlet UILabel *reportTime;
+
+@end

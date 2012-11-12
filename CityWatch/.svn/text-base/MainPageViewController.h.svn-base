@@ -1,0 +1,15 @@
+//
+//  MainPageViewController.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface MainPageViewController : UIViewController
+
+@property (strong, nonatomic) NSArray *reportsData;
+
+@end

@@ -1,0 +1,127 @@
+//
+//  ReportsFilterViewController.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/23/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "ReportsFilterViewController.h"
+
+NSString *const kFilterOptionKey = @"filterOption";
+NSString *const kSortOptionKey = @"sortOption";
+
+@implementation ReportsFilterViewController
+
+@synthesize selectedFilterOption;
+@synthesize selectedSortOption;
+@synthesize delegate;
+@synthesize allReportsCell;
+@synthesize myReportsCell;
+@synthesize datePostedCell;
+@synthesize distanceCell;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    if (self.selectedFilterOption == FilterOptionAll) self.allReportsCell.accessoryType = UITableViewCellAccessoryCheckmark;
+    else if (self.selectedFilterOption == FilterOptionMine) self.myReportsCell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    if (self.selectedSortOption == SortOptionRecent) self.datePostedCell.accessoryType = UITableViewCellAccessoryCheckmark;
+    else if (self.selectedSortOption == SortOptionDistance) self.distanceCell.accessoryType = UITableViewCellAccessoryCheckmark;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
+    
+    switch (indexPath.section) {
+        case 0:     // filter
+            self.selectedFilterOption = indexPath.row;
+            if (indexPath.row == 0) {
+                self.allReportsCell.accessoryType = UITableViewCellAccessoryCheckmark;
+                self.myReportsCell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            else if (indexPath.row == 1) {
+                // check to see whether the user has reported anything, if so show alert and dont do anything
+                //                UIAlertView *noUserInfoAlert = [[UIAlertView alloc] initWithTitle:@"Reporter Information Missing" message:@"Please enter user information to retrieve your reports" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                //                [noUserInfoAlert show];
+
+                self.myReportsCell.accessoryType = UITableViewCellAccessoryCheckmark;
+                self.allReportsCell.accessoryType = UITableViewCellAccessoryNone;
+            }
+
+            break;
+            
+        case 1:     // sort
+            self.selectedSortOption = indexPath.row;
+            self.datePostedCell.accessoryType = UITableViewCellAccessoryNone;
+            self.distanceCell.accessoryType = UITableViewCellAccessoryNone;
+            if (indexPath.row == 0) {
+                self.datePostedCell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            else if (indexPath.row == 1) {
+                self.distanceCell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+
+            break;
+        default:
+            break;
+    }
+}
+
+- (IBAction)doneButtonPressed:(id)sender {
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithInt:selectedFilterOption], @"filterOption",
+                             [NSNumber numberWithInt:selectedSortOption], @"sortOption", nil];
+    [delegate reportFilterEditingFinishedWithOptions:options];
+//    [delegate reportFilterEditingFinishedWithFilterOption:self.selectedFilterRow sortOption:self.selectedSortRow];
+    // animate button
+    [UIView animateWithDuration:0.25 
+                     animations:^{
+                         ((UIView *)sender).transform = CGAffineTransformMakeRotation(M_PI - 0.01);
+                     }
+                     completion:^(BOOL finished) {
+                         [self dismissModalViewControllerAnimated:YES];
+                     }
+     ];
+}
+
+- (void)viewDidUnload
+{
+    [self setAllReportsCell:nil];
+    [self setMyReportsCell:nil];
+    [self setDatePostedCell:nil];
+    [self setDistanceCell:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+@end

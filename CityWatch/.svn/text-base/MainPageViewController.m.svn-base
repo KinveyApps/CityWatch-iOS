@@ -1,0 +1,89 @@
+//
+//  MainPageViewController.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/17/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import "MainPageViewController.h"
+#import "ReportsRootViewController.h"
+#import "ReportModel.h"
+
+@implementation MainPageViewController
+
+@synthesize reportsData;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
+- (void)applicationBecameActive:(NSNotification *)notification {
+    if ([[ApplicationSettings sharedSettings] presentNewReportOnStartup]) {
+        [self performSegueWithIdentifier:@"kSegueIdentifierNewReport" sender:self];
+    }
+}
+
+- (void)refreshData {
+    // look for new data, add to reportsData
+    self.reportsData = [ReportModel allReports];
+}
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(applicationBecameActive:) 
+                                                 name:UIApplicationDidBecomeActiveNotification 
+                                               object:nil];
+    
+    [self refreshData];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"kSegueIdentifierPushRecentReports"]) {
+        ((ReportsRootViewController *)segue.destinationViewController).showOnlyMyReports = NO;
+        ((ReportsRootViewController *)segue.destinationViewController).reportsData = self.reportsData;
+    }
+    else if ([segue.identifier isEqualToString:@"kSegueIdentifierPushMyReports"]) { 
+        NSMutableArray *myReports = [[NSMutableArray alloc] init];
+        for (ReportModel *report in self.reportsData) {
+            if ([[report.reporter objectForKey:@"firstName"] isEqualToString:@"me"]) [myReports addObject:report];
+        }
+        ((ReportsRootViewController *)segue.destinationViewController).showOnlyMyReports = YES;
+        ((ReportsRootViewController *)segue.destinationViewController).reportsData = [myReports copy];
+        myReports = nil;
+    }
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+@end

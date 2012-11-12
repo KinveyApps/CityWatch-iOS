@@ -1,0 +1,21 @@
+//
+//  ApplicationSettings.h
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/19/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
+
+@interface ApplicationSettings : NSUserDefaults
+
+@property (weak, nonatomic) NSArray *previousStartupVersions;
+@property (weak, nonatomic) NSDictionary *reporterInfo;
+@property (nonatomic) BOOL presentNewReportOnStartup;
+@property (weak, nonatomic) NSArray *currentUserCoordinates;
+
++ (ApplicationSettings *)sharedSettings;
+
+@end

@@ -1,0 +1,18 @@
+//
+//  PotholesCustomToolbar.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/23/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "PotholesCustomToolbar.h"
+
+@implementation PotholesCustomToolbar
+
+- (void)drawRect:(CGRect)rect {
+    UIImage *imageBackground = [UIImage imageNamed:@"blue_top_bar_no_tab.png"];
+    [imageBackground drawInRect:CGRectMake(0, 1, self.frame.size.width, self.frame.size.height)];
+}
+
+@end

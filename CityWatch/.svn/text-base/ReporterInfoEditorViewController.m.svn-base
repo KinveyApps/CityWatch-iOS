@@ -1,0 +1,89 @@
+//
+//  ReporterInfoEditorViewController.m
+//  Potholes
+//
+//  Created by Mark Daigneault on 1/19/12.
+//  Copyright (c) 2012 Intrepid Pursuits. All rights reserved.
+//
+
+#import "ReporterInfoEditorViewController.h"
+
+@implementation ReporterInfoEditorViewController
+
+@synthesize reporterFirstNameTextField;
+@synthesize reporterLastNameTextField;
+@synthesize reporterEmailTextField;
+@synthesize delegate;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.reporterFirstNameTextField.text = [[[ApplicationSettings sharedSettings] reporterInfo] objectForKey:@"firstName"];
+    self.reporterLastNameTextField.text = [[[ApplicationSettings sharedSettings] reporterInfo] objectForKey:@"lastName"];
+    self.reporterEmailTextField.text = [[[ApplicationSettings sharedSettings] reporterInfo] objectForKey:@"email"];
+    [self.reporterFirstNameTextField isFirstResponder];
+}
+
+- (BOOL)validEmail:(NSString *)emailString {
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"; 
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex]; 
+    
+    return [emailTest evaluateWithObject:emailString];
+}
+
+- (IBAction)cancelButtonPressed:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)doneButtonPressed:(id)sender {
+    
+    NSString *email;
+    if ([self validEmail:self.reporterEmailTextField.text]) email = self.reporterEmailTextField.text;
+    else email = @"";
+
+    NSDictionary *reporterInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  self.reporterFirstNameTextField.text, @"firstName",
+                                  self.reporterLastNameTextField.text, @"lastName",
+                                  email, @"email", nil];
+    [[ApplicationSettings sharedSettings] setReporterInfo:reporterInfo];
+
+    [delegate reporterInfoWasChanged:reporterInfo];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewDidUnload
+{
+    [self setReporterFirstNameTextField:nil];
+    [self setReporterLastNameTextField:nil];
+    [self setReporterEmailTextField:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+@end
