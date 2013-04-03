@@ -2,7 +2,8 @@
 //  AppDelegate.m
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012 Intrepid Pursuits
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -49,9 +50,9 @@ NSString *const FBSessionStateChangedNotification = @"com.kinvey.CityWatch:FBSes
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 #warning supply Kinvey credentials here and Facebook App Id into the info.plist
-    (void) [[KCSClient sharedClient] initializeKinveyServiceForAppKey:@"<#APP ID#>"
-                                                        withAppSecret:@"<#APP SECRET#>"
-                                                         usingOptions:nil];
+//    (void) [[KCSClient sharedClient] initializeKinveyServiceForAppKey:@"<#APP ID#>"
+//                                                        withAppSecret:@"<#APP SECRET#>"
+//                                                         usingOptions:nil];    
     
     // We open the session up front, as long as we have a cached token, otherwise rely on the user
     // to login explicitly with the FBUserSettingsViewController tab
@@ -151,28 +152,17 @@ NSString *const FBSessionStateChangedNotification = @"com.kinvey.CityWatch:FBSes
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
     // To check for a deep link, first parse the incoming URL
-    // to look for a target_url parameter
-    NSString* resourceSpecifier = [url resourceSpecifier];
-    NSDictionary *params = [self parseURLParams:resourceSpecifier];
-    // Check if target URL exists
-    NSString *targetURLString = [params valueForKey:@"target_url"];
-    if (targetURLString) {
-        // For a deeplink back from Facebook to our App, it should look like
-        //http://baas.kinvey.com/rpc/:appId/:OGCollection/:id/:category/_objView.html
-        //If deep link doens't work, put a breakpoint here and make sure this structure hasn't changed
-        
-        NSArray* subpieces = [targetURLString pathComponents];
-        NSString* deeplink = subpieces.count >= 5 ? subpieces[5] : nil;
-        
-        // Check for the 'deeplink' parameter to check if this is one of
-        // our incoming news feed link
-        if (deeplink) {
+    // The resulting items dictionary will have the object, action, and id
+    NSDictionary* items = [KCSFacebookHelper parseDeepLink:url];
+    if (items != nil) {
+        NSString* entityId = items[KCSFacebookOGEntityId];
+        if (entityId != nil) {
             NSArray* reports = [ReportService sharedInstance].reports;
             __block NSUInteger reportIdx = -1;
             __block ReportModel* report = nil;
             [reports enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 ReportModel* rm = obj;
-                if ([rm.kinveyObjectId isEqualToString:deeplink]) {
+                if ([rm.kinveyObjectId isEqualToString:entityId]) {
                     reportIdx = idx;
                     report = rm;
                     *stop = YES;
@@ -185,12 +175,12 @@ NSString *const FBSessionStateChangedNotification = @"com.kinvey.CityWatch:FBSes
                 //download more reports and refresh the list
                 [[ReportService sharedInstance] pullReports];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(done) name:NOTIFY_FetchComplete object:nil];
-                _deepLink = deeplink;
+                _deepLink = entityId;
             }
             
         }
     } else {
-        //if not a deeplink is a fb signin
+        //if not a deeplink, it is a fb signin
         dispatch_async(dispatch_get_current_queue(), ^{
             [self facebookSignInWithFBSession];
         });
@@ -242,11 +232,11 @@ NSString *const FBSessionStateChangedNotification = @"com.kinvey.CityWatch:FBSes
 - (void) facebookSignInWithFBSession
 {
     // The access token from the Facebook session and pass that to Kinvey to log in with the backend
-    NSString* accessToken = [FBSession activeSession].accessToken;
+    NSString* accessToken = [FBSession activeSession].accessTokenData.accessToken;
     if (!accessToken) {
         return;
     }
-    [KCSUser loginWithWithSocialIdentity:KCSSocialIDFacebook
+    [KCSUser loginWithSocialIdentity:KCSSocialIDFacebook
                         accessDictionary:@{ KCSUserAccessTokenKey : accessToken}
                      withCompletionBlock:^(KCSUser *user, NSError *errorOrNil, KCSUserActionResult result) {
                          if (errorOrNil == nil) {

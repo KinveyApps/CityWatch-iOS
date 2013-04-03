@@ -2,17 +2,16 @@
 //  KCSQuery.h
 //  KinveyKit
 //
-//  Created by Brian Wilson on 1/26/12.
-//  Copyright (c) 2012 Kinvey. All rights reserved.
+//  Copyright (c) 2012-2013 Kinvey. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "KinveyHeaderInfo.h"
 
-typedef enum
+typedef enum : NSInteger
 {
     // NO OP
-    kKCSNOOP = 0,
+    kKCSNOOP = 1,
     
     // Basic operators
     kKCSLessThan = 16,
@@ -239,7 +238,7 @@ typedef enum {
  @return The new KCSQuery object (autoreleased).
  
  */
-+ (KCSQuery *)queryOnField:(NSString *)field withExactMatchForValue: (NSObject *)value; // Accepts Regular Expressions
++ (KCSQuery *)queryOnField:(NSString *)field withExactMatchForValue: (NSObject *)value;
 
 /*! Query a field for multiple values (AND).
  
@@ -338,25 +337,35 @@ typedef enum {
  * `kKCSRegexpAnchorsMatchLines` - Allow ^ and $ to match the start and end of lines.
  
  @param field The field in Kinvey to query on.
- @param expression the regular expression string
- @param options regular expression options
+ @param expression the regular expression string or `NSRegularExpression` object. 
+ @param options regular expression options. This will override any options in a provided `NSRegularExpression` expression.
  @see queryOnField:withRegex:
  @return The new KCSQuery object (autoreleased).
  @since 1.8
  */
-+ (KCSQuery *)queryOnField:(NSString*)field withRegex:(NSString*)expression options:(KCSRegexpQueryOptions)options;
++ (KCSQuery *)queryOnField:(NSString*)field withRegex:(id)expression options:(KCSRegexpQueryOptions)options;
 
 /*! Creates a regular expression query on a field.
  
  This query will return entities where the field values match the regular expression. By default, the match is case-sensitive and new-lines do not match anchors. 
  
  @param field The field in Kinvey to query on.
- @param expression the regular expression string
+ @param expression the regular expression string or `NSRegularExpression` object. If using a NSRegularExpression, this will its options, where available. 
  @see queryOnField:withRegex:options:
  @return The new KCSQuery object (autoreleased).
  @since 1.8
  */
-+ (KCSQuery *)queryOnField:(NSString*)field withRegex:(NSString*)expression;
++ (KCSQuery *)queryOnField:(NSString*)field withRegex:(id)expression;
+
+/*! Copy factory
+ 
+ This creates a new `KCSQuery` with the same values as the old input one. 
+ 
+ @param query the query to copy
+ @return a new KCSQuery that matches the old object
+ @since 1.14.0
+ */
++ (KCSQuery *) queryWithQuery:(KCSQuery*) query;
 
 
 ///---------------------------------------------------------------------------------------
@@ -502,11 +511,11 @@ typedef enum {
 /// @name Modifying Queries
 ///---------------------------------------------------------------------------------------
 /*! The current limit modifier, defaults to nil.  Set to nil to clear the limit modifier. */
-@property (nonatomic, retain) KCSQueryLimitModifier *limitModifer;
+@property (nonatomic, strong) KCSQueryLimitModifier *limitModifer;
 /*! The current skip modifier, defaults to nil.  Set to nil to clear the skip modifier. */
-@property (nonatomic, retain) KCSQuerySkipModifier *skipModifier;
+@property (nonatomic, strong) KCSQuerySkipModifier *skipModifier;
 /*! The current list of sort modifiers.  Read only, use addSortModifier: and clearSortModifiers to modify. */
-@property (nonatomic, retain, readonly) NSArray *sortModifiers;
+@property (nonatomic, strong, readonly) NSArray *sortModifiers;
 
 /*! Add a new sort modifier to our list of modifiers.
  

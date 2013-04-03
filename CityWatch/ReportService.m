@@ -2,7 +2,8 @@
 //  ApplicationData.m
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012 Intrepid Pursuits
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -82,25 +83,19 @@
 - (void) uploadToFacebook:(ReportModel *)report
 {
     if ([self.reportUploaders objectForKey:report.objectId] == nil) { //finished uploading        
-        //Upload a new Open Graph action to Facebook through the special `FBOG` Data Integration collection
+        //Upload a new Open Graph action to Facebook through the special Data Integration collection
         //This has collection and the data structure has to be defined ahead of time in Kinvey's console
         //See the Open Graph tutorial in Kinvey documentation for instructions on how to port this feature
         //to your own apps.
         
-        //create a dictionary for the info to be posted to Open Graph
-        NSDictionary* obj = @{
-        @"entityId" : report.objectId, //the related object's id
-        @"entityCollection" : @"Reports", //the data store collecion name
-        @"actionType" : @"report", //defined as an app action in Facebook
-        @"objectType" : report.category, //defined as a type in Facebook
-        @"ref": report.category}; //also a special FB value
-
-        KCSCollection* fbCollection = [[KCSClient sharedClient] collectionFromString:@"FBOG" withClass:[NSDictionary class]];
-        KCSAppdataStore* store = [KCSAppdataStore storeWithCollection:fbCollection options:nil];
-        [store saveObject:obj withCompletionBlock:^(NSArray *objectsOrNil, NSError *errorOrNil) {
+        [KCSFacebookHelper publishToOpenGraph:report.objectId
+                                       action:@"cwappns:report"
+                                   objectType:[@"cwappns:" stringByAppendingString:report.category]
+                               optionalParams:nil
+                                   completion:^(NSString *actionId, NSError *errorOrNil) {
             //silently fail -- If Open Graph integration is essential, you would have to retry this action again later
-            NSLog(@"Finished with error = %@", errorOrNil);
-        } withProgressBlock:nil];
+            NSLog(@"Finished publishing story. ID: %@, error (if any) = %@", actionId, errorOrNil);
+        }];
     }
 }
 

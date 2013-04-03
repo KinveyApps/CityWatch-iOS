@@ -2,7 +2,7 @@
 //  KinveyKit.h
 //  KinveyKit
 //
-//  Copyright (c) 2008-2012, Kinvey, Inc. All rights reserved.
+//  Copyright (c) 2008-2013, Kinvey, Inc. All rights reserved.
 //
 //  This software contains valuable confidential and proprietary information of
 //  KINVEY, INC and is subject to applicable licensing agreements.
@@ -13,7 +13,7 @@
 #ifndef KinveyKit_h
 #define KinveyKit_h
 
-#import "KCSPush.h"
+#import "KinveyVersion.h"
 #import "KCSClient.h"
 #import "KinveyAnalytics.h"
 #import "KCSEntityDict.h"
@@ -28,7 +28,6 @@
 #import "KCSReachability.h"
 #import "KinveyErrorCodes.h"
 #import "KCSQuery.h"
-#import "KCSUniqueNumber.h"
 #import "KCSStore.h"
 
 #import "KCSStore.h"
@@ -39,6 +38,13 @@
 #import "KCSReduceFunction.h"
 #import "KCSLinkedAppdataStore.h"
 #import "KCSOfflineSaveStore.h"
+
+#import "KCSLogSink.h"
+
+
+#if TARGET_OS_IPHONE
+#import "KCSPush.h"
+#endif
 
 //UI & Framework Helpers
 #import "CLLocation+Kinvey.h"

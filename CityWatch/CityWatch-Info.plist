@@ -43,14 +43,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb&lt;#Facebok App Id#&gt;</string>
+				<string>fb&lt;# Facebook App ID #&gt;</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>FacebookAppID</key>
-	<string>&lt;#Facebook App Id#&gt;</string>
+	<string>&lt;# Facebook App ID #&gt;</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIMainStoryboardFile</key>
