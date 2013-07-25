@@ -78,15 +78,20 @@ NSString *const kSegueIdentifierPushImageViewer = @"kSegueIdentifierPushImageVie
         return self.reportImageView.frame.size.height + 2*CELL_HEIGHT_PADDING;
     }
     else {
+#ifdef __IPHONE_6_0
+        NSLineBreakMode lineBreakMode = NSLineBreakByWordWrapping;
+#else
+        UILineBreakMode lineBreakMode = UILineBreakModeWordWrap;
+#endif
         switch (indexPath.row) {
             case 0:
-                labelHeight = [self.reportCategoryLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:UILineBreakModeWordWrap].height;
+                labelHeight = [self.reportCategoryLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:lineBreakMode].height;
                 break;
             case 1:
-                labelHeight = [self.reportLocationLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:UILineBreakModeWordWrap].height;
+                labelHeight = [self.reportLocationLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:lineBreakMode].height;
                 break;
             case 2:
-                labelHeight = [self.reportDescriptionLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:UILineBreakModeWordWrap].height;
+                labelHeight = [self.reportDescriptionLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:15.0f] constrainedToSize:CGSizeMake(197.0f, 999.0f) lineBreakMode:lineBreakMode].height;
                 break;
                 
             default:

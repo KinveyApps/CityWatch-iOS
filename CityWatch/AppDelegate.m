@@ -50,9 +50,9 @@ NSString *const FBSessionStateChangedNotification = @"com.kinvey.CityWatch:FBSes
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 #warning supply Kinvey credentials here and Facebook App Id into the info.plist
-//    (void) [[KCSClient sharedClient] initializeKinveyServiceForAppKey:@"<#APP ID#>"
-//                                                        withAppSecret:@"<#APP SECRET#>"
-//                                                         usingOptions:nil];    
+    (void) [[KCSClient sharedClient] initializeKinveyServiceForAppKey:@"<#APP ID#>"
+                                                        withAppSecret:@"<#APP SECRET#>"
+                                                         usingOptions:nil];    
     
     // We open the session up front, as long as we have a cached token, otherwise rely on the user
     // to login explicitly with the FBUserSettingsViewController tab
