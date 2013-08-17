@@ -187,9 +187,10 @@ SECTION 1. Apache License, V2.0
    >>> Facebook SDK
 SECTION 2. KinveyKit License
    >>> KinveyKit
-SECTION 3. Custom License
-   >>> UIImage Categories
+SECTION 3. MIT-style License
    >>> PullToRefreshView
+SECTION 4. Custom License
+   >>> UIImage Categories
 
 --------------- SECTION 1: Apache License, V2.0 -------
 
@@ -222,7 +223,7 @@ of KINVEY, INC and is subject to applicable licensing agreements.
 Unauthorized reproduction, transmission or distribution of this file
 and its contents is a violation of applicable laws.
     
---------------- SECTION 3: Custom Licenses ----------
+--------------- SECTION 3: MIT-style License ----------
 
 >>> PullToRefreshView
 
@@ -247,6 +248,7 @@ and its contents is a violation of applicable laws.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
+--------------- SECTION 4: Custom Licenses ----------
 
 >>> UIImage Categories
 
