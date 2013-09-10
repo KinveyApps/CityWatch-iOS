@@ -2,7 +2,7 @@
 //  NewReportViewController.m
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #import "MapAnnotation.h"
 #import "ReportService.h"
 #import "UIImage+Resize.h"
+#import "AppDelegate.h"
 
 #define MAX_IMAGE_BUTTON_WIDTH      280.0f
 #define MAX_IMAGE_BUTTON_HEIGHT     160.0f
@@ -33,32 +34,24 @@ typedef enum {
     NewReportTextFieldTypeDescription
 } NewReportTextFieldType;
 
-@interface NewReportViewController()
+@interface NewReportViewController() <CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIImagePickerController *imagePickerController;
 @property (strong, nonatomic) MapAnnotation *reportAnnotation;
 @property (weak, nonatomic) UIImage *image;
+@property (nonatomic, strong) CLLocationManager* locationManager;
 
 @end
 
 @implementation NewReportViewController
 
-@synthesize imagePickerButton;
-@synthesize imagePickerController;
-@synthesize reportAnnotation;
-@synthesize report;
-@synthesize reportCategoryTextField;
-@synthesize reportLocationTextField;
-@synthesize reportDescriptionTextField;
-@synthesize submitButton;
-
 - (UIImagePickerController *)imagePickerController {
-    if (!imagePickerController) {
-        imagePickerController = [[UIImagePickerController alloc] init];
-        imagePickerController.delegate = (id)self;
-        imagePickerController.allowsEditing = NO;
+    if (!_imagePickerController) {
+        _imagePickerController = [[UIImagePickerController alloc] init];
+        _imagePickerController.delegate = (id)self;
+        _imagePickerController.allowsEditing = NO;
     }
-    return imagePickerController;
+    return _imagePickerController;
 }
 
 
@@ -95,12 +88,13 @@ typedef enum {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [self.locationManager stopMonitoringSignificantLocationChanges];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    report = [ReportModel newReportModel];
+    self.report = [ReportModel newReportModel];
         
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" 
                                                                              style:UIBarButtonItemStyleBordered 
@@ -116,12 +110,10 @@ typedef enum {
 
     self.submitButton.enabled = NO;
     
-    NSArray* location = [[ApplicationSettings sharedSettings] currentUserCoordinates];
-    CLLocationCoordinate2D currentCoordinate = 
-    CLLocationCoordinate2DMake([location[0] floatValue], [location[1] floatValue]);
-    self.reportAnnotation = [[MapAnnotation alloc] initWithCoordinate:currentCoordinate
-                                                                title:@"Report Location"];
-    self.reportAnnotation.delegate = self;
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
     
     self.imagePickerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     self.imagePickerButton.layer.borderColor = [UIColor colorWithHue:0 saturation:0 brightness:0.75 alpha:1].CGColor;
@@ -129,6 +121,9 @@ typedef enum {
     self.imagePickerButton.layer.cornerRadius = 10.0f;
     self.imagePickerButton.layer.masksToBounds = YES;
 }
+
+
+#pragma mark - UIActionSheetDelegate
 
 - (IBAction)imageSourceSelectionButtonPressed {    
     UIActionSheet *imageSourceSelectorSheet = [[UIActionSheet alloc] initWithTitle:nil 
@@ -139,7 +134,6 @@ typedef enum {
     [imageSourceSelectorSheet showInView:self.view];
 }
 
-#pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == actionSheet.cancelButtonIndex) {
@@ -175,7 +169,7 @@ typedef enum {
 
 - (void)pickerTableViewController:(PickerTableViewController *)picker selectedRow:(NSInteger)row {
     [self.navigationController popViewControllerAnimated:YES];
-    self.report.category = [self.report.validCategories objectAtIndex:row];
+    self.report.category = self.report.validCategories[row];
     self.reportCategoryTextField.text = self.report.category;
     [self checkIfSubmitButtonShouldBeEnabled];
 }
@@ -220,14 +214,9 @@ typedef enum {
     [self.imagePickerButton setImage:nil forState:UIControlStateNormal];
     [self.imagePickerButton setTitle:nil forState:UIControlStateNormal];
     // store new image in report
-    UIImage *newImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    
-    //MB save image to disk and set path.
-    //self.report.image = newImage;
+    UIImage *newImage = info[UIImagePickerControllerOriginalImage];
     
     self.image = newImage;
-    
-    
     
     // adjust button size according to new image aspect ratio and max dimensions
     CGSize newImagePickerButtonSize = newImage.size;
@@ -274,6 +263,16 @@ typedef enum {
     return NO;
 }
 
+#pragma mark - Location
+- (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation* location = [locations lastObject];
+    
+    self.reportAnnotation = [[MapAnnotation alloc] initWithCoordinate:location.coordinate
+                                                                title:@"Report Location"];
+    self.reportAnnotation.delegate = self;
+}
+
 #pragma mark - MapAnnotationDelegate
 
 - (void)mapAnnotationFinishedReverseGeocoding:(MapAnnotation *)annotation {
@@ -303,16 +302,12 @@ typedef enum {
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        NSString* imageName = self.report.objectId;
-        NSString *path = [[self documentsDirectoryPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", imageName]];
         UIImage *smallImage = [self.image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(640, 640) interpolationQuality:kCGInterpolationDefault];
-        [UIImageJPEGRepresentation(smallImage, 0.5) writeToFile:path atomically:YES];
-        self.report.imagePath = path;
-        self.report.imageName = imageName;
+        self.report.image = smallImage;
         dispatch_queue_t mainThreadQueue = dispatch_get_main_queue();
         dispatch_async(mainThreadQueue, ^{
-            [[ReportService sharedInstance] addReport:report];
-            [[ReportService sharedInstance] pushReport:report];
+            [[ReportService sharedInstance] addReport:self.report];
+            [[ReportService sharedInstance] pushReport:self.report];
             [self dismissModalViewControllerAnimated:YES];
         });
     });

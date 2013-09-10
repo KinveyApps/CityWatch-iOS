@@ -52,10 +52,7 @@ NSString *const kSegueIdentifierPushImageViewer = @"kSegueIdentifierPushImageVie
     self.reportCategoryLabel.text = self.report.category;
     self.reportLocationLabel.text = self.report.locationDescription;
     self.reportDescriptionLabel.text = self.report.description;
-
-    if (self.report.isImageDownloaded) {
-        self.reportImageView.image = [UIImage imageWithContentsOfFile:self.report.imagePath];        
-    }
+    self.reportImageView.image = self.report.image;
 }
 
 #pragma mark - segue methods

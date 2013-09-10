@@ -13,15 +13,12 @@
 		2736B1B7162C61FF006CF960 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2736B1B6162C61FF006CF960 /* Twitter.framework */; };
 		2736B1BB162C64FD006CF960 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2736B1BA162C64FD006CF960 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		2736B1BD162C6502006CF960 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2736B1BC162C6502006CF960 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		27577DAB16483A7600363835 /* License.md in Resources */ = {isa = PBXBuildFile; fileRef = 27577DAA16483A7600363835 /* License.md */; };
 		275EF728164D4C1600933278 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 275EF726164D4C1600933278 /* Default.png */; };
 		275EF729164D4C1600933278 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 275EF727164D4C1600933278 /* Default@2x.png */; };
 		2767C50A164303C00074C11B /* ReportDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2767C509164303C00074C11B /* ReportDetailViewController.m */; };
 		276C539516308E5800959D74 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 276C539316308E5800959D74 /* Icon.png */; };
 		276C539616308E5800959D74 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 276C539416308E5800959D74 /* Icon@2x.png */; };
-		2779D08317A1686B00FA3FE8 /* libUAirship-1.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2779D08217A1686B00FA3FE8 /* libUAirship-1.4.0.a */; };
 		2779D08517A1687700FA3FE8 /* KinveyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2779D08417A1687700FA3FE8 /* KinveyKit.framework */; };
-		2779D08717A168BC00FA3FE8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2779D08617A168BC00FA3FE8 /* Default-568h@2x.png */; };
 		27B872631641BBA7001F590E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B8720D1641BBA7001F590E /* AppDelegate.m */; };
 		27B8726A1641BBA7001F590E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27B872191641BBA7001F590E /* MainStoryboard.storyboard */; };
 		27B872D51641C2D4001F590E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B872D41641C2BE001F590E /* main.m */; };
@@ -47,8 +44,6 @@
 		27B873381641C2F4001F590E /* what_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B8731F1641C2F4001F590E /* what_icon.png */; };
 		27B873391641C2F4001F590E /* where_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B873201641C2F4001F590E /* where_icon.png */; };
 		27B8733C1641C309001F590E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27B8733A1641C309001F590E /* InfoPlist.strings */; };
-		27B8733D1641C34A001F590E /* ApplicationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B872B81641C0A7001F590E /* ApplicationSettings.m */; };
-		27B8733E1641C34D001F590E /* ImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B872BA1641C0D2001F590E /* ImageDownloader.m */; };
 		27B8733F1641C350001F590E /* MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B872BC1641C103001F590E /* MapAnnotation.m */; };
 		27B873401641C354001F590E /* ReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B872BE1641C103001F590E /* ReportModel.m */; };
 		27B873411641C357001F590E /* ReportService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B872C01641C103001F590E /* ReportService.m */; };
@@ -71,6 +66,7 @@
 		27B8736B1641E5B8001F590E /* CityWatchToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B8729D1641BBE8001F590E /* CityWatchToolbar.m */; };
 		27B873811642C4F9001F590E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B873801642C4F9001F590E /* FacebookSDK.framework */; };
 		27B8738A1642C57C001F590E /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27B873891642C57C001F590E /* FBUserSettingsViewResources.bundle */; };
+		27CF826D17D6783500B5B0CB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27CF826C17D6783500B5B0CB /* Default-568h@2x.png */; };
 		5E2C877D14C5BA880062229A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2C877C14C5BA880062229A /* UIKit.framework */; };
 		5E2C877F14C5BA880062229A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2C877E14C5BA880062229A /* Foundation.framework */; };
 		5E2C878114C5BA880062229A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E2C878014C5BA880062229A /* CoreGraphics.framework */; };
@@ -95,16 +91,13 @@
 		2736B1B6162C61FF006CF960 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		2736B1BA162C64FD006CF960 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		2736B1BC162C6502006CF960 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		27577DAA16483A7600363835 /* License.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.md; sourceTree = SOURCE_ROOT; };
 		275EF726164D4C1600933278 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = SOURCE_ROOT; };
 		275EF727164D4C1600933278 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = SOURCE_ROOT; };
 		2767C509164303C00074C11B /* ReportDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReportDetailViewController.m; path = CityWatch/ReportDetailViewController.m; sourceTree = SOURCE_ROOT; };
 		2767C50B164303EC0074C11B /* ReportDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ReportDetailViewController.h; path = CityWatch/ReportDetailViewController.h; sourceTree = SOURCE_ROOT; };
 		276C539316308E5800959D74 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = SOURCE_ROOT; };
 		276C539416308E5800959D74 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = SOURCE_ROOT; };
-		2779D08217A1686B00FA3FE8 /* libUAirship-1.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libUAirship-1.4.0.a"; path = "Airship/libUAirship-1.4.0.a"; sourceTree = "<group>"; };
 		2779D08417A1687700FA3FE8 /* KinveyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KinveyKit.framework; path = Kinvey/KinveyKit.framework; sourceTree = "<group>"; };
-		2779D08617A168BC00FA3FE8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		27B8720C1641BBA7001F590E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		27B8720D1641BBA7001F590E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		27B8721A1641BBA7001F590E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
@@ -131,10 +124,6 @@
 		27B872B21641BED3001F590E /* ReportsFilterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ReportsFilterViewController.m; path = CityWatch/ReportsFilterViewController.m; sourceTree = SOURCE_ROOT; };
 		27B872B31641BED3001F590E /* ReportsRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ReportsRootViewController.h; path = CityWatch/ReportsRootViewController.h; sourceTree = SOURCE_ROOT; };
 		27B872B41641BED3001F590E /* ReportsRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ReportsRootViewController.m; path = CityWatch/ReportsRootViewController.m; sourceTree = SOURCE_ROOT; };
-		27B872B71641C0A7001F590E /* ApplicationSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ApplicationSettings.h; path = CityWatch/ApplicationSettings.h; sourceTree = SOURCE_ROOT; };
-		27B872B81641C0A7001F590E /* ApplicationSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ApplicationSettings.m; path = CityWatch/ApplicationSettings.m; sourceTree = SOURCE_ROOT; };
-		27B872B91641C0D2001F590E /* ImageDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ImageDownloader.h; path = CityWatch/ImageDownloader.h; sourceTree = SOURCE_ROOT; };
-		27B872BA1641C0D2001F590E /* ImageDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ImageDownloader.m; path = CityWatch/ImageDownloader.m; sourceTree = SOURCE_ROOT; };
 		27B872BB1641C103001F590E /* MapAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MapAnnotation.h; path = CityWatch/MapAnnotation.h; sourceTree = SOURCE_ROOT; };
 		27B872BC1641C103001F590E /* MapAnnotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MapAnnotation.m; path = CityWatch/MapAnnotation.m; sourceTree = SOURCE_ROOT; };
 		27B872BD1641C103001F590E /* ReportModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ReportModel.h; path = CityWatch/ReportModel.h; sourceTree = SOURCE_ROOT; };
@@ -179,6 +168,7 @@
 		27B8733B1641C309001F590E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = CityWatch/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		27B873801642C4F9001F590E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		27B873891642C57C001F590E /* FBUserSettingsViewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FBUserSettingsViewResources.bundle; path = FacebookSDK.framework/Versions/A/Resources/FBUserSettingsViewResources.bundle; sourceTree = "<group>"; };
+		27CF826C17D6783500B5B0CB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = SOURCE_ROOT; };
 		5E2C877814C5BA880062229A /* CityWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CityWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E2C877C14C5BA880062229A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5E2C877E14C5BA880062229A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -211,7 +201,6 @@
 				F392B1EC14F4390C00BBF30D /* CoreFoundation.framework in Frameworks */,
 				F392B1EE14F4391900BBF30D /* CoreTelephony.framework in Frameworks */,
 				F392B1F014F4394900BBF30D /* StoreKit.framework in Frameworks */,
-				2779D08317A1686B00FA3FE8 /* libUAirship-1.4.0.a in Frameworks */,
 				F392B1F214F4395500BBF30D /* MobileCoreServices.framework in Frameworks */,
 				F392B1F414F4396C00BBF30D /* libsqlite3.dylib in Frameworks */,
 				F392B1F614F4397800BBF30D /* libz.dylib in Frameworks */,
@@ -247,7 +236,6 @@
 		5E2C876D14C5BA880062229A = {
 			isa = PBXGroup;
 			children = (
-				2779D08617A168BC00FA3FE8 /* Default-568h@2x.png */,
 				27B8720B1641BBA7001F590E /* CityWatch */,
 				5E2C878314C5BA880062229A /* Supporting Files */,
 				5E2C877B14C5BA880062229A /* Frameworks */,
@@ -267,7 +255,6 @@
 			isa = PBXGroup;
 			children = (
 				2779D08417A1687700FA3FE8 /* KinveyKit.framework */,
-				2779D08217A1686B00FA3FE8 /* libUAirship-1.4.0.a */,
 				27B873891642C57C001F590E /* FBUserSettingsViewResources.bundle */,
 				27B873801642C4F9001F590E /* FacebookSDK.framework */,
 				2736B1BC162C6502006CF960 /* AdSupport.framework */,
@@ -300,7 +287,6 @@
 				27B872CE1641C2BE001F590E /* CityWatch-Prefix.pch */,
 				27B8733A1641C309001F590E /* InfoPlist.strings */,
 				27B872D41641C2BE001F590E /* main.m */,
-				27577DAA16483A7600363835 /* License.md */,
 				5EBEF22414C9CE5E00ADA1AE /* Images */,
 			);
 			name = "Supporting Files";
@@ -310,10 +296,6 @@
 		5E2C87A514C5BE0D0062229A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				27B872B71641C0A7001F590E /* ApplicationSettings.h */,
-				27B872B81641C0A7001F590E /* ApplicationSettings.m */,
-				27B872B91641C0D2001F590E /* ImageDownloader.h */,
-				27B872BA1641C0D2001F590E /* ImageDownloader.m */,
 				27B872BB1641C103001F590E /* MapAnnotation.h */,
 				27B872BC1641C103001F590E /* MapAnnotation.m */,
 				27B872BD1641C103001F590E /* ReportModel.h */,
@@ -357,6 +339,7 @@
 		5EBEF22414C9CE5E00ADA1AE /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				27CF826C17D6783500B5B0CB /* Default-568h@2x.png */,
 				27345FCB164DA0DC00CD66C5 /* loginBackgroundIPhonePortrait.png */,
 				27345FCC164DA0DC00CD66C5 /* loginBackgroundIPhonePortrait@2x.png */,
 				275EF726164D4C1600933278 /* Default.png */,
@@ -495,15 +478,14 @@
 				27B873381641C2F4001F590E /* what_icon.png in Resources */,
 				27B873391641C2F4001F590E /* where_icon.png in Resources */,
 				27B8733C1641C309001F590E /* InfoPlist.strings in Resources */,
-				2779D08717A168BC00FA3FE8 /* Default-568h@2x.png in Resources */,
 				27B873641641D228001F590E /* CustomReportTableViewCell.xib in Resources */,
 				27B873691641E581001F590E /* blue_top_bar.png in Resources */,
 				27B8738A1642C57C001F590E /* FBUserSettingsViewResources.bundle in Resources */,
-				27577DAB16483A7600363835 /* License.md in Resources */,
 				275EF728164D4C1600933278 /* Default.png in Resources */,
 				275EF729164D4C1600933278 /* Default@2x.png in Resources */,
 				27345FCD164DA0DC00CD66C5 /* loginBackgroundIPhonePortrait.png in Resources */,
 				27345FCE164DA0DC00CD66C5 /* loginBackgroundIPhonePortrait@2x.png in Resources */,
+				27CF826D17D6783500B5B0CB /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,8 +498,6 @@
 			files = (
 				27B872631641BBA7001F590E /* AppDelegate.m in Sources */,
 				27B872D51641C2D4001F590E /* main.m in Sources */,
-				27B8733D1641C34A001F590E /* ApplicationSettings.m in Sources */,
-				27B8733E1641C34D001F590E /* ImageDownloader.m in Sources */,
 				27B8733F1641C350001F590E /* MapAnnotation.m in Sources */,
 				27B873401641C354001F590E /* ReportModel.m in Sources */,
 				27B873411641C357001F590E /* ReportService.m in Sources */,
@@ -628,17 +608,13 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)",
-					"$(SRCROOT)/Kinvey",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Kinvey\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CityWatch/CityWatch-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/CityWatch/CityWatch-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"$(SRCROOT)/Airship",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -653,17 +629,13 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)",
-					"$(SRCROOT)/Kinvey",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Kinvey\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CityWatch/CityWatch-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/CityWatch/CityWatch-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"$(SRCROOT)/Airship",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",

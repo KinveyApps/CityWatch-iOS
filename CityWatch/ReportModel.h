@@ -2,7 +2,7 @@
 //  ReportModel.h
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -35,9 +35,7 @@
 @property (nonatomic) BOOL reportIsClosed;
 @property (readonly) NSArray *validCategories;
 @property (nonatomic) BOOL isUploaded;
-@property (strong, nonatomic) NSString *imagePath;
-@property (readonly) BOOL isImageDownloaded;
-@property (nonatomic, copy) NSString* imageName;
+@property (strong, nonatomic) UIImage *image;
 @property (nonatomic, copy) NSString* severity;
 @property (nonatomic, copy) NSString* risk;
 @property (nonatomic, copy) NSString* repeat;

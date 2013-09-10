@@ -2,7 +2,6 @@
 //  ApplicationData.m
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits
 //  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +27,7 @@
 @property(strong, nonatomic) NSMutableArray *managedReports;
 @property(strong, nonatomic) NSMutableDictionary *imageDownloaders;
 @property(strong, nonatomic) NSMutableDictionary *reportUploaders;
-@property(strong, nonatomic) KCSAppdataStore* store;
+@property(strong, nonatomic) KCSLinkedAppdataStore* store;
 @end
 
 @implementation ReportService
@@ -40,7 +39,7 @@
         
         //Create a caching store that loads from the Reports collection
         KCSCollection* collection = [KCSCollection collectionFromString:@"Reports" ofClass:[ReportModel class]];
-        _store = [KCSCachedStore storeWithCollection:collection options:@{ KCSStoreKeyCachePolicy : @(KCSCachePolicyNetworkFirst)}];
+        _store = [KCSLinkedAppdataStore storeWithCollection:collection options:@{ KCSStoreKeyCachePolicy : @(KCSCachePolicyNetworkFirst)}];
     }
     
     return self;
@@ -138,24 +137,6 @@
 
         }
     } withProgressBlock:nil];
-}
-
-
-- (void) downloadImageForReport:(ReportModel *)report
-{
-    if ([self.imageDownloaders objectForKey:report.objectId] == nil) {
-        ImageDownloader *downloader = [[ImageDownloader alloc] initWithReport:report];
-        downloader.delegate = self;
-        [self.imageDownloaders setObject:downloader forKey:report.objectId];
-        [downloader download];
-    }
-}
-
-- (void) imageDownloaderDidFinish:(ImageDownloader *)downloader
-{
-    if (downloader.report && downloader.report.objectId) {
-        [self.imageDownloaders removeObjectForKey:downloader.report.objectId];
-    }
 }
 
 - (void) saveReportsToDisk 

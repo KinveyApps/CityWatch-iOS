@@ -2,7 +2,7 @@
 //  ReportsFilterViewController.m
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -23,14 +23,6 @@ NSString *const kFilterOptionKey = @"filterOption";
 NSString *const kSortOptionKey = @"sortOption";
 
 @implementation ReportsFilterViewController
-
-@synthesize selectedFilterOption;
-@synthesize selectedSortOption;
-@synthesize delegate;
-@synthesize allReportsCell;
-@synthesize myReportsCell;
-@synthesize datePostedCell;
-@synthesize distanceCell;
 
 #pragma mark - View lifecycle
 
@@ -81,11 +73,8 @@ NSString *const kSortOptionKey = @"sortOption";
 }
 
 - (IBAction)doneButtonPressed:(id)sender {
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithInt:selectedFilterOption], @"filterOption",
-                             [NSNumber numberWithInt:selectedSortOption], @"sortOption", nil];
-    [delegate reportFilterEditingFinishedWithOptions:options];
-//    [delegate reportFilterEditingFinishedWithFilterOption:self.selectedFilterRow sortOption:self.selectedSortRow];
+    NSDictionary *options = @{@"filterOption" : @(self.selectedFilterOption), @"sortOption" : @(self.selectedSortOption)};
+    [self.delegate reportFilterEditingFinishedWithOptions:options];
     // animate button
     [UIView animateWithDuration:0.25 
                      animations:^{

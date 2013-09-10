@@ -2,7 +2,7 @@
 //  MapAnnotation.m
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 #import "UIImage+Resize.h"
 
 @implementation MapAnnotation
-@synthesize subtitle = _subtitle;
+@synthesize subtitle=_subtitle;
 
 - (id)initWithCoordinate:(CLLocationCoordinate2D)myCoord title:(NSString *)myTitle {
     self = [super init];
@@ -42,7 +42,7 @@
         //identifier = aReport.identifier;
         // MB create image from imagePath
         //image = [aReport.image copy];
-        UIImage *thumbnail = [UIImage imageWithContentsOfFile:report.imagePath];
+        UIImage *thumbnail = report.image;
         thumbnail = [thumbnail thumbnailImage:100 transparentBorder:0 cornerRadius:7 interpolationQuality:kCGInterpolationDefault];
         dispatch_queue_t mainThreadQueue = dispatch_get_main_queue();
         dispatch_async(mainThreadQueue, ^{
@@ -57,7 +57,7 @@
     if (_subtitle == nil) {
         return [NSString stringWithFormat:@"(%f , %f)",_coordinate.latitude,_coordinate.longitude];
     }
-        return _subtitle;
+    return _subtitle;
 }
 
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate {

@@ -2,7 +2,7 @@
 //  AppDelegate.h
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,11 +21,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
-
-
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) CLLocationManager *locationManager;
 
 - (void) showFacebookLogin;
 @end

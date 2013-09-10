@@ -2,7 +2,7 @@
 //  ApplicationData.h
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,16 +20,14 @@
 #import <Foundation/Foundation.h>
 
 #import "ReportModel.h"
-#import "ImageDownloader.h"
 #import "ReportUploader.h"
 
 #define NOTIFY_FetchComplete @"NOTIFY_FetchComplete"
 #define NOTIFY_ImageDownloaded @"NOTIFY_ImageDownloaded"
 
-@interface ReportService : NSObject <ReportUploaderDelegate, ImageDownloaderDelegate>
+@interface ReportService : NSObject <ReportUploaderDelegate>
 - (void) pullReports;
 - (void) pushReport:(ReportModel *) report;
-- (void) downloadImageForReport:(ReportModel *)report;
 - (void) addReport:(ReportModel *)report;
 - (void) saveReportsToDisk;
 - (void) readReportsFromDisk;

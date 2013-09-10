@@ -2,7 +2,7 @@
 //  ReportModel.m
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@
 
 @implementation ReportModel
 
-@synthesize identifier;
-
 - (void) encodeWithCoder:(NSCoder *)encoder
 {
     [encoder encodeObject:self.objectId forKey:@"objectId"];
@@ -31,23 +29,22 @@
     [encoder encodeObject:self.locationDescription forKey:@"locationDescription"];
     [encoder encodeObject:self.description forKey:@"description"];
     [encoder encodeObject:self.timestamp forKey:@"timestamp"];
-    [encoder encodeObject:[NSNumber numberWithBool:self.reportIsClosed] forKey:@"reportIsClosed"];
-    [encoder encodeObject:[NSNumber numberWithBool:self.isUploaded] forKey:@"isUploaded"];
-    [encoder encodeObject:self.imagePath forKey:@"imagePath"];
+    [encoder encodeBool:self.reportIsClosed forKey:@"reportIsClosed"];
+    [encoder encodeBool:self.isUploaded forKey:@"isUploaded"];
 }
 
 - (id) initWithCoder:(NSCoder *)decoder
 {
     if (self = [super init]) {
+        NSKeyedUnarchiver* ua = (NSKeyedUnarchiver*)decoder;
         self.objectId = [decoder decodeObjectForKey:@"objectId"];
         self.category = [decoder decodeObjectForKey:@"category"];
         self.locationString = [decoder decodeObjectForKey:@"locationString"];
         self.locationDescription = [decoder decodeObjectForKey:@"locationDescription"];
         self.description = [decoder decodeObjectForKey:@"description"];
         self.timestamp = [decoder decodeObjectForKey:@"timestamp"];
-        self.reportIsClosed = [(NSNumber *)[decoder decodeObjectForKey:@"category"] boolValue]; 
-        self.isUploaded = [(NSNumber *)[decoder decodeObjectForKey:@"category"] boolValue];
-        self.imagePath = [decoder decodeObjectForKey:@"imagePath"];
+        self.reportIsClosed = [ua decodeBoolForKey:@"reportIsClosed"];
+        self.isUploaded = [ua decodeBoolForKey:@"category"];
     }
     return self;
 }
@@ -71,17 +68,13 @@
 - (void) setLocationString:(NSString *)locationString
 {
     NSArray *coordinates = [locationString componentsSeparatedByString:@","];
-    _lon = [[coordinates objectAtIndex:0] floatValue];
-    _lat = [[coordinates objectAtIndex:1] floatValue];
+    _lon = [coordinates[0] floatValue];
+    _lat = [coordinates[1] floatValue];
 }
 
 + (NSString *)generateUuidString
 {
-    CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
-    NSString *uuidString = [(__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuid) copy];
-    CFRelease(uuid);
-    
-    return uuidString;
+    return [[NSUUID UUID] UUIDString];
 }
 
 + (ReportModel *) newReportModel {
@@ -90,7 +83,8 @@
     return report;
 }
 
-- (NSDictionary*) hostToKinveyPropertyMapping {    
+- (NSDictionary*) hostToKinveyPropertyMapping
+{
     return  @{
     @"description" : @"description",
     @"lat" : @"latitude",
@@ -101,21 +95,22 @@
     @"timestamp" : @"updated_time",
     @"objectId" : KCSEntityKeyId,
     @"summary" : @"title",
-    @"imageName" : @"image",
+    @"image" : @"image",
     @"severity" : @"severity",
     @"risk" : @"risk",
     @"repeat" : @"repeat"
     };
 }
 
-- (NSArray *)validCategories {
-    return @[@"infrastructure",@"wildlife",@"weather",@"obstruction",@"health",
-            @"emergency",@"fire",@"flood",@"other"];
++ (NSDictionary *)kinveyPropertyToCollectionMapping
+{
+    return @{@"image" : KCSFileStoreCollectionName};
 }
 
-- (BOOL) isImageDownloaded
+- (NSArray *)validCategories
 {
-    return self.imagePath != nil;
+    return @[@"infrastructure",@"wildlife",@"weather",@"obstruction",@"health",
+            @"emergency",@"fire",@"flood",@"other"];
 }
 
 @end

@@ -2,7 +2,7 @@
 //  ReportsRootViewController.m
 //  CityWatch
 //
-//  Copyright 2012 Intrepid Pursuits & Kinvey, Inc
+//  Copyright 2012-2013 Kinvey, Inc
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -30,57 +30,54 @@
 
 #define MILES_PER_METER     0.000621371192
 
-@interface ReportsRootViewController ()
+@interface ReportsRootViewController () <CLLocationManagerDelegate>
+@property (nonatomic, retain) CLLocationManager* locationManager;
 - (void) setThumbnailForCell:(CustomReportTableViewCell *)cell withReport:(ReportModel *)report;
 @end
 
 @implementation ReportsRootViewController
 
-@synthesize reportsData;
-@synthesize mainContentView;
-@synthesize reportsTableView;
-@synthesize cellFromNib;
-@synthesize reportsMapView;
-@synthesize addReportButton;
-@synthesize toggleViewButton;
-@synthesize activityIndicator;
-
 - (UITableView *)reportsTableView {
-    if (!reportsTableView) {
-        reportsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 372) 
+    if (!_reportsTableView) {
+        _reportsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 372) 
                                                         style:UITableViewStylePlain];
-        reportsTableView.delegate = self;
-        reportsTableView.dataSource = self;
-        reportsTableView.backgroundColor = [UIColor whiteColor];
-        reportsTableView.rowHeight = 124.0f;
+        _reportsTableView.delegate = self;
+        _reportsTableView.dataSource = self;
+        _reportsTableView.backgroundColor = [UIColor whiteColor];
+        _reportsTableView.rowHeight = 124.0f;
     }
-    return reportsTableView;
+    return _reportsTableView;
 }
 
 - (MKMapView *)reportsMapView {
-    if (!reportsMapView) {
-        reportsMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 372)];
-        reportsMapView.delegate = self;
-        reportsMapView.showsUserLocation = YES;
+    if (!_reportsMapView) {
+        _reportsMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 372)];
+        _reportsMapView.delegate = self;
+        _reportsMapView.showsUserLocation = YES;
     }
-    return reportsMapView;
+    return _reportsMapView;
 }
 
 
-- (float)reportDistanceFromCurrentLocation:(ReportModel *)report {
-    CLLocationCoordinate2D userCoordinate = CLLocationCoordinate2DMake([[[[ApplicationSettings sharedSettings] currentUserCoordinates] objectAtIndex:0] floatValue], [[[[ApplicationSettings sharedSettings] currentUserCoordinates] objectAtIndex:1] floatValue]);
-    CLLocation *userLocation = [[CLLocation alloc] initWithCoordinate:userCoordinate 
-                                                             altitude:1 
-                                                   horizontalAccuracy:1 
-                                                     verticalAccuracy:1 
-                                                            timestamp:nil];
-    CLLocation *reportLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(report.lat, report.lon)
-                                                               altitude:1 
-                                                     horizontalAccuracy:1 
-                                                       verticalAccuracy:1 
-                                                              timestamp:nil];
-    
-    return [reportLocation distanceFromLocation:userLocation];  // meters
+- (float)reportDistanceFromCurrentLocation:(ReportModel *)report
+{
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+        CLLocationCoordinate2D userCoordinate = [self.locationManager location].coordinate;
+        CLLocation *userLocation = [[CLLocation alloc] initWithCoordinate:userCoordinate
+                                                                 altitude:1
+                                                       horizontalAccuracy:1
+                                                         verticalAccuracy:1
+                                                                timestamp:nil];
+        CLLocation *reportLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(report.lat, report.lon)
+                                                                   altitude:1
+                                                         horizontalAccuracy:1
+                                                           verticalAccuracy:1
+                                                                  timestamp:nil];
+        
+        return [reportLocation distanceFromLocation:userLocation];  // meters
+    } else {
+        return INFINITY;
+    }
 }
 
 - (void)sortReportsData:(NSArray *)data {
@@ -122,7 +119,7 @@
     ReportModel *report = notification.object;
     int index = [self.reportsData indexOfObject:report];
     if (index >= 0) {
-        CustomReportTableViewCell *cell = (CustomReportTableViewCell *)[reportsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        CustomReportTableViewCell *cell = (CustomReportTableViewCell *)[self.reportsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         if (cell) {
             [self setThumbnailForCell:cell withReport:report];
         }
@@ -147,7 +144,7 @@
 
 - (IBAction)logout:(id)sender
 {
-    [[KCSClient sharedClient].currentUser logout];
+    [[KCSUser activeUser] logout];
     [[FBSession activeSession] closeAndClearTokenInformation];
     
     dispatch_async(dispatch_get_current_queue(), ^{
@@ -195,6 +192,10 @@
     
   //  [self.activityIndicator startAnimating];
   //  [self refreshData];
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
     
     pullView = [[PullToRefreshView alloc] initWithScrollView:self.reportsTableView];
     [pullView setDelegate:self];
@@ -327,12 +328,10 @@
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     cell.reportTime.text = [dateFormatter stringFromDate:report.timestamp];
     
-    if (report.isImageDownloaded) {
+    if (report.image) {
         [self setThumbnailForCell:cell withReport:report];
-    }
-    else {
+    } else {
         cell.reportImage.image = nil;
-        [[ReportService sharedInstance] downloadImageForReport:report];
     }
     
     return cell;
@@ -343,7 +342,7 @@
     // load the image on a background thread and update the screen on the main thread.
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        UIImage *image = [UIImage imageWithContentsOfFile:report.imagePath];
+        UIImage *image = report.image;
         image = [image thumbnailImage:100 transparentBorder:0 cornerRadius:7 interpolationQuality:kCGInterpolationDefault];
         dispatch_queue_t mainThreadQueue = dispatch_get_main_queue();
         dispatch_async(mainThreadQueue, ^{
@@ -356,6 +355,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ReportModel *selectedReport = [self.reportsData objectAtIndex:indexPath.row];
     [self showDetailViewForReport:selectedReport];
+}
+
+#pragma mark - Location Delegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    //reload the data to update locations
+    [self.reportsTableView reloadData];
 }
 
 #pragma mark - MKMapViewDelegate

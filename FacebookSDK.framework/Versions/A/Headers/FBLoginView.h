@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Facebook
+ * Copyright 2010-present Facebook.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,8 @@
 
 /*!
  @abstract
- The read permissions to request if the user logs in via this view.
+ The read permissions to request if the user logs in via this view. The basic_info permission must be explicitly requested at
+ first login, and is no longer inferred, (subject to an active migration.)
  
  @discussion
  Note, that if read permissions are specified, then publish permissions should not be specified.
