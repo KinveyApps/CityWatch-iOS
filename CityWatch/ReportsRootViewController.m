@@ -117,7 +117,7 @@
 - (void)imageDownloaded:(NSNotification *) notification 
 {
     ReportModel *report = notification.object;
-    int index = [self.reportsData indexOfObject:report];
+    NSInteger index = [self.reportsData indexOfObject:report];
     if (index >= 0) {
         CustomReportTableViewCell *cell = (CustomReportTableViewCell *)[self.reportsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         if (cell) {
@@ -320,7 +320,7 @@
     // populate image and labels of cell
     cell.reportLocation.text = report.locationDescription;
     cell.reportCategory.text = report.category;
-    cell.reportDescription.text = report.description;
+    cell.reportDescription.text = report.objectDescription;
     cell.reportDistance.text = [NSString stringWithFormat:@"%.1f miles",[self reportDistanceFromCurrentLocation:report]*MILES_PER_METER];
 
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

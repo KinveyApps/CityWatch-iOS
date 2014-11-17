@@ -30,7 +30,7 @@
 @property (nonatomic) float alt;
 @property (strong, nonatomic) NSString *locationString;
 @property (strong, nonatomic) NSString *locationDescription;
-@property (strong, nonatomic) NSString *description;
+@property (strong, nonatomic) NSString *objectDescription;
 @property (strong, nonatomic) NSDate *timestamp;
 @property (nonatomic) BOOL reportIsClosed;
 @property (readonly) NSArray *validCategories;

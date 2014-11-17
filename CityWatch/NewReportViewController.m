@@ -70,7 +70,7 @@ typedef enum {
     }
     else if ([segue.identifier isEqualToString:@"kSegueIdentifierPushDescription"]) {
         ((DescriptionEditorViewController *)segue.destinationViewController).delegate = self;
-        ((DescriptionEditorViewController *)segue.destinationViewController).description = self.report.description;
+        ((DescriptionEditorViewController *)segue.destinationViewController).objectDescription = self.report.objectDescription;
     }
 }
 
@@ -190,7 +190,7 @@ typedef enum {
 
 - (void)descriptionEditorFinishedEditingWithText:(NSString *)description {
     [self.navigationController popViewControllerAnimated:YES];
-    self.report.description = description;
+    self.report.objectDescription = description;
 //    NSLinguisticTagger* tagger = [[NSLinguisticTagger alloc] initWithTagSchemes:@[] options:0];
 //    [tagger setString:description];
 //    NSRange r = [tagger sentenceRangeForRange:NSMakeRange(0, 1)];

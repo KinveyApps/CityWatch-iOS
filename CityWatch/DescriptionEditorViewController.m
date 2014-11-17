@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
     [self.descriptionTextField becomeFirstResponder];
-    if (self.description) self.descriptionTextField.text = self.description;
+    if (self.objectDescription) self.descriptionTextField.text = self.objectDescription;
 }
 
 - (IBAction)doneButtonPressed:(id)sender {

@@ -24,7 +24,7 @@
 @interface DescriptionEditorViewController : UITableViewController
 
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextField;
-@property (strong, nonatomic) NSString *description;
+@property (strong, nonatomic) NSString *objectDescription;
 @property (weak, nonatomic) id <DescriptionEditorViewControllerDelegate> delegate;
 
 @end

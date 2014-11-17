@@ -27,7 +27,7 @@
     [encoder encodeObject:self.category forKey:@"category"];
     [encoder encodeObject:self.locationString forKey:@"locationString"];
     [encoder encodeObject:self.locationDescription forKey:@"locationDescription"];
-    [encoder encodeObject:self.description forKey:@"description"];
+    [encoder encodeObject:self.objectDescription forKey:@"objectDescription"];
     [encoder encodeObject:self.timestamp forKey:@"timestamp"];
     [encoder encodeBool:self.reportIsClosed forKey:@"reportIsClosed"];
     [encoder encodeBool:self.isUploaded forKey:@"isUploaded"];
@@ -41,7 +41,7 @@
         self.category = [decoder decodeObjectForKey:@"category"];
         self.locationString = [decoder decodeObjectForKey:@"locationString"];
         self.locationDescription = [decoder decodeObjectForKey:@"locationDescription"];
-        self.description = [decoder decodeObjectForKey:@"description"];
+        self.objectDescription = [decoder decodeObjectForKey:@"objectDescription"];
         self.timestamp = [decoder decodeObjectForKey:@"timestamp"];
         self.reportIsClosed = [ua decodeBoolForKey:@"reportIsClosed"];
         self.isUploaded = [ua decodeBoolForKey:@"category"];
@@ -86,7 +86,7 @@
 - (NSDictionary*) hostToKinveyPropertyMapping
 {
     return  @{
-    @"description" : @"description",
+    @"objectDescription" : @"objectDescription",
     @"lat" : @"latitude",
     @"lon" : @"longitude",
     @"alt" : @"altitude",
