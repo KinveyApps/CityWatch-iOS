@@ -200,7 +200,6 @@
     pullView = [[PullToRefreshView alloc] initWithScrollView:self.reportsTableView];
     [pullView setDelegate:self];
     [self.reportsTableView addSubview:pullView];
-    [pullView setState:PullToRefreshViewStateLoading];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -209,6 +208,7 @@
     self.reportsData = [ReportService sharedInstance].reports;
     [self sortReportsData:self.reportsData];
     [self.reportsTableView reloadData];
+    [pullView setState:PullToRefreshViewStateLoading];
     
 }
 
@@ -394,7 +394,6 @@
         annotationImageView.image = ((MapAnnotation *) annotation).image; //[UIImage imageNamed:@"earth.jpg"];
         
         UIButton *detailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        [detailButton addTarget:self action:@selector(calloutButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         detailButton.frame = CGRectMake(0, 0, 32, 32);
         pinView.leftCalloutAccessoryView = annotationImageView;
         pinView.rightCalloutAccessoryView = detailButton;
@@ -425,8 +424,7 @@
     }
 }
 
-- (IBAction)calloutButtonPressed:(UIButton *)sender {
-    MKAnnotationView *view = (MKAnnotationView *)sender.superview/*callout view*/.superview/*annotation view*/;
+-(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
     [self showDetailViewForReport:((MapAnnotation *)view.annotation).reportModel];
 }
 
