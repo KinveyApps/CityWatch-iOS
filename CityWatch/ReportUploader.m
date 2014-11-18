@@ -25,7 +25,6 @@
 }
 - (void) notifyDelegateIfReady;
 @property (strong, nonatomic) KCSAppdataStore* kinveyStore;
-@property (strong, nonatomic) KCSResourceResponse *result;
 @end
 
 @implementation ReportUploader
