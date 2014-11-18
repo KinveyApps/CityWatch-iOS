@@ -39,7 +39,7 @@
 
 - (UITableView *)reportsTableView {
     if (!_reportsTableView) {
-        _reportsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 372) 
+        _reportsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.mainContentView.frame.size.height)
                                                         style:UITableViewStylePlain];
         _reportsTableView.delegate = self;
         _reportsTableView.dataSource = self;
@@ -51,7 +51,7 @@
 
 - (MKMapView *)reportsMapView {
     if (!_reportsMapView) {
-        _reportsMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 372)];
+        _reportsMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.mainContentView.frame.size.height)];
         _reportsMapView.delegate = self;
         _reportsMapView.showsUserLocation = YES;
     }
@@ -200,6 +200,7 @@
     pullView = [[PullToRefreshView alloc] initWithScrollView:self.reportsTableView];
     [pullView setDelegate:self];
     [self.reportsTableView addSubview:pullView];
+    [pullView setState:PullToRefreshViewStateLoading];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
