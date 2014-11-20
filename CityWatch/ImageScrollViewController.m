@@ -30,6 +30,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     self.navigationController.navigationBar.alpha = 1;
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
 }
 
 - (void)viewDidLoad
@@ -90,25 +91,23 @@
 }
 
 - (void)tapGestureHandler:(UITapGestureRecognizer *)recognizer {
-    [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden] withAnimation:UIStatusBarAnimationFade];
-    
     BOOL navBarHidden = self.navigationController.navigationBarHidden;
     // if nav bar is hidden, unhide it before animation, since alpha is already 0
     if (navBarHidden) {
         [self.navigationController setNavigationBarHidden:NO animated:NO];
-        _mainScrollView.frame = CGRectOffset(_mainScrollView.frame, 0, -10);
+        _mainScrollView.frame = CGRectOffset(_mainScrollView.frame, 0, -20);
     }
     
     [UIView animateWithDuration:0.5 
                      animations:^{
-                         float alpha = self.navigationController.navigationBar.alpha;
-                         self.navigationController.navigationBar.alpha = (alpha == 0) ? 1 : 0;
+                         [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden] withAnimation:UIStatusBarAnimationFade];
+                         self.navigationController.navigationBar.alpha = (navBarHidden) ? 1 : 0;
                      }
                      completion:^(BOOL finished) {
                          // if nav bar is hidden, unhide it before animation, since alpha is already 0
                          if (!navBarHidden) {
                              [self.navigationController setNavigationBarHidden:YES animated:NO];
-                             _mainScrollView.frame = CGRectOffset(_mainScrollView.frame, 0, 10);
+                             _mainScrollView.frame = CGRectOffset(_mainScrollView.frame, 0, 20);
                          }
                      }
      ];
