@@ -193,6 +193,10 @@ NSString *const FBSessionStateChangedNotification = @"com.kinvey.CityWatch:FBSes
     [self facebookSignInWithFBSession];
 }
 
+- (void)loginViewControllerDidLogUserIn:(id)sender {
+    [self facebookSignInWithFBSession];    
+}
+
 - (void) facebookSignInWithFBSession
 {
     // The access token from the Facebook session and pass that to Kinvey to log in with the backend

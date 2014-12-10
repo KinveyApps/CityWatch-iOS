@@ -96,8 +96,8 @@ See `AppDelegate.m`'s `application:openURL:sourceApplication:annotation:` method
 * Xcode 4.5+
 * iPhone/iPod Touch
 * iOS 6+
-* KinveyKit 1.17.2+
-* Facebook SDK for iOS 1.3+
+* KinveyKit 1.27.1
+* Facebook SDK for iOS 3.20
 
 ## Contact
 Website: [www.kinvey.com](http://www.kinvey.com)
@@ -106,7 +106,7 @@ Support: [support@kinvey.com](http://docs.kinvey.com/mailto:support@kinvey.com)
 
 ## License
 
-Copyright (c) 2013 Kinvey, Inc.
+Copyright (c) 2014 Kinvey, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

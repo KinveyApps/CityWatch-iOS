@@ -51,7 +51,7 @@ NSString *const kSegueIdentifierPushImageViewer = @"kSegueIdentifierPushImageVie
     self.imageCell.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     self.reportCategoryLabel.text = self.report.category;
     self.reportLocationLabel.text = self.report.locationDescription;
-    self.reportDescriptionLabel.text = self.report.description;
+    self.reportDescriptionLabel.text = self.report.objectDescription;
     self.reportImageView.image = self.report.image;
 }
 

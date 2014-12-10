@@ -39,7 +39,7 @@
 
 - (UITableView *)reportsTableView {
     if (!_reportsTableView) {
-        _reportsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 372) 
+        _reportsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.mainContentView.frame.size.height)
                                                         style:UITableViewStylePlain];
         _reportsTableView.delegate = self;
         _reportsTableView.dataSource = self;
@@ -51,7 +51,7 @@
 
 - (MKMapView *)reportsMapView {
     if (!_reportsMapView) {
-        _reportsMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 372)];
+        _reportsMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.mainContentView.frame.size.height)];
         _reportsMapView.delegate = self;
         _reportsMapView.showsUserLocation = YES;
     }
@@ -117,7 +117,7 @@
 - (void)imageDownloaded:(NSNotification *) notification 
 {
     ReportModel *report = notification.object;
-    int index = [self.reportsData indexOfObject:report];
+    NSInteger index = [self.reportsData indexOfObject:report];
     if (index >= 0) {
         CustomReportTableViewCell *cell = (CustomReportTableViewCell *)[self.reportsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         if (cell) {
@@ -208,6 +208,7 @@
     self.reportsData = [ReportService sharedInstance].reports;
     [self sortReportsData:self.reportsData];
     [self.reportsTableView reloadData];
+    [pullView setState:PullToRefreshViewStateLoading];
     
 }
 
@@ -320,7 +321,7 @@
     // populate image and labels of cell
     cell.reportLocation.text = report.locationDescription;
     cell.reportCategory.text = report.category;
-    cell.reportDescription.text = report.description;
+    cell.reportDescription.text = report.objectDescription;
     cell.reportDistance.text = [NSString stringWithFormat:@"%.1f miles",[self reportDistanceFromCurrentLocation:report]*MILES_PER_METER];
 
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -393,7 +394,6 @@
         annotationImageView.image = ((MapAnnotation *) annotation).image; //[UIImage imageNamed:@"earth.jpg"];
         
         UIButton *detailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        [detailButton addTarget:self action:@selector(calloutButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         detailButton.frame = CGRectMake(0, 0, 32, 32);
         pinView.leftCalloutAccessoryView = annotationImageView;
         pinView.rightCalloutAccessoryView = detailButton;
@@ -424,8 +424,7 @@
     }
 }
 
-- (IBAction)calloutButtonPressed:(UIButton *)sender {
-    MKAnnotationView *view = (MKAnnotationView *)sender.superview/*callout view*/.superview/*annotation view*/;
+-(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
     [self showDetailViewForReport:((MapAnnotation *)view.annotation).reportModel];
 }
 
